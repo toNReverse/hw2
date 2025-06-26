@@ -1,0 +1,250 @@
+/* Reset di base */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #fff;
+  margin: 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #070A21;
+}
+
+/* Container principale login/signup */
+.login-container, .signup-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 10px;
+  text-align: center;
+}
+.login-container{
+  margin-bottom: 150px;
+}
+.signup-container{
+  margin-bottom: 100px;
+
+}
+
+/* Logo + titolo */
+#logo-log a{
+  font-size: 44px;
+  font-weight: bold;  
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+}
+
+h5 {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+/* Messaggio di errore globale */
+.error {
+  background-color: #e22134;
+  padding: 14px;
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+/* Errori inline con icona */
+.errorj {
+  display: flex;
+  align-items: center;
+  background-color: #fce4e4;
+  padding: 10px;
+  border-radius: 6px;
+  margin: 10px 0;
+  font-size: 14px;
+  color: #b00020;
+}
+
+.errorj img {
+  width: 16px;
+  margin-right: 8px;
+}
+
+/* Form */
+form {
+  text-align: left;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #d9dadc;
+}
+
+.name,
+.email,
+.password,
+.confirm_password {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #d9dadc;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+/* Messaggi di validazione inline */
+.name div,
+.email div,
+.password div,
+.confirm_password div {
+  display: none; /* mostra con JS se serve */
+  font-size: 13px;
+  color: #b00020;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.name div img,
+.email div img,
+.password div img,
+.confirm_password div img {
+  width: 16px;
+  margin-right: 6px;
+}
+
+/* Checkbox */
+.allow {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  font-size: 14px;
+}
+
+.allow input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+/* Pulsante login/signup */
+.submit-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-btn input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  background-color: #10142d;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn input:hover {
+  background-color: #3948ab;
+  cursor: pointer;
+}
+
+/* Registrazione link */
+.signup {
+  margin: 10px 0;
+}
+
+.signup-btn-container {
+  margin-top: 10px;
+}
+
+.signup-btn {
+  display: block;
+  width: 100%;
+  border: 3px solid #616467;
+  border-radius: 50px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #616467;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
+}
+
+.signup-btn:hover {
+  background-color: #616467;
+  color: #fff;
+}
+/* Pulsante submit */
+.submit input[type="submit"] {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit input[type="submit"]:hover {
+  background-color: #333;
+}
+
+/* Link registrati/login */
+.signup {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.signup a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Errori */
+.errorj {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffecec;
+  color: #d8000c;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.errorj img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Nascondi il div con messaggi se non necessario */
+.name div,
+.email div,
+.password div,
+.confirm_password div {
+  display: none;
+  color: red;
+  font-size: 0.8rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
