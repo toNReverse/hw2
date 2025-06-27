@@ -1,15 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Profilo - Bershka Style</title>
-    <link rel="stylesheet" href="{{ url('css/profile.css') }}">
-    <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
-    <script src="{{ url('js/hw1.js') }}" defer></script>
-    <script src="{{ url('js/cart-modal.js') }}" defer></script>
+  <meta charset="UTF-8">
+  <title>Preferiti</title>
+  <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
+  <link rel="stylesheet" href="{{ url('css/wish-list.css') }}">
+  <script src="{{ url('js/hw1.js') }}" defer></script>
+  <script src="{{ url('js/wish-list.js') }}" defer></script>
+  <script src="{{ url('js/cart-modal.js') }}" defer></script>
 
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <nav class="navbar-container">
@@ -89,9 +89,8 @@
         <a>Carrello</a>
       </div>
     </nav>
-
+    
     <!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
-  
     <div id="cart-modal" class="modal hidden">
       <div class="model">
         <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
@@ -119,46 +118,6 @@
       </div>
     </div>
 
-
-  <section>
-    <div class="profile-container">
-        <aside class="sidebar">
-            <h2>Ciao, {{ $userinfo['name'] }}!</h2>
-            <p class="email">{{ $userinfo['email'] }}</p>
-            <ul>
-                <li>I miei acquisti</li>
-                <li>Resi online</li>
-                <li>Dati personali</li>
-                <li>Indirizzi salvati</li>
-                <li>I tuoi vantaggi MMBRS</li>
-                <li>Saldo MMBRSS e movimenti</li>
-            </ul>
-            <a href="{{ url('logout') }}" class="logout">Chiudi la sessione</a>
-        </aside>
-
-        <main class="main-content">
-            <h3>I miei acquisti</h3>
-
-            <div class="order-box">
-                <p class="status">Consegnato</p>
-                <p class="date">Lo hai ricevuto giorno 24/01</p>
-                <p class="price">45,98 €</p>
-                <div class="order-images">
-                    <img src="img/img-cart1.jpg" alt="Prodotto 1">
-                    <img src="img/img-cart2.jpg" alt="Prodotto 2">
-                </div>
-            </div>
-
-            <div class="guest-box">
-                <h4>Hai effettuato l'acquisto come ospite?</h4>
-                <p>Se non trovi il tuo ordine, probabilmente hai effettuato l'acquisto senza essere registrato.</p>
-                <a href="#" class="find-order">Trovare un ordine &rarr;</a>
-            </div>
-        </main>
-    </div>
-  </section>
-
-<!-- NAV -->
   <div id="nav-donna" class="modal-nav hidden">  
     <div class="nav-content">
       <ul class="nav-menu">
@@ -250,8 +209,18 @@
     </div>
   </div>
   
+  <section>
+    <div class="wl-container">
+      <h1>Preferiti</h1>
+      <div class="wl-grid" id="wl-favorites-container">
+        <!-- I preferiti saranno caricati da JS -->
+      </div>
+    </div>  
+  </section>
+
+
   <!-- SEARCH BAR -->
-  <div id="search-page">
+<div id="search-page">
   <div class="search-container-page-log-sign">
     <img src="img/54481.png" alt="Search" class="search-icon">
     <input type="text" placeholder="CERCA" class="search-input-page">
@@ -357,7 +326,6 @@
       </div>
     </div>
   </div>
-  
+
 </body>
 </html>
-

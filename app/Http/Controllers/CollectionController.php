@@ -30,11 +30,18 @@ class CollectionController extends BaseController
         if (!$user) {
             abort(404); // O redirect con errore
         }
-
         // Passa i dati alla view
         return view('profile', ['userinfo' => [
             'name' => $user->name,
             'email' => $user->email
         ]]);
+    }
+
+    public function wishlist()
+    {
+        if (!Session::get('user_id')) {
+            return redirect('/login'); // ← QUESTO crea il ciclo!
+        }
+        return view('wishlist');
     }
 }
