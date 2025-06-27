@@ -3,6 +3,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Preferiti</title>
   <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
   <link rel="stylesheet" href="{{ url('css/wish-list.css') }}">
@@ -213,7 +214,22 @@
     <div class="wl-container">
       <h1>Preferiti</h1>
       <div class="wl-grid" id="wl-favorites-container">
-        <!-- I preferiti saranno caricati da JS -->
+        @forelse ($favorites as $product)
+          <div class="wl-card">
+            <div class="wl-image-wrapper">
+              <img src="{{ $product->thumbnail }}" alt="{{ $product->title }}" class="wl-product-image" />
+            </div>
+            <div class="wl-info">
+              <div class="wl-name">{{ $product->title }}</div>
+              <div class="wl-price-heart">
+                <div class="wl-price">{{ number_format($product->price, 2, ',', '.') }} €</div>
+                <img src="{{ url('img/filled-hearth-search-page.png') }}" alt="Cuore" class="wl-heart" data-id="{{ $product->id }}" />
+              </div>
+            </div>
+          </div>
+        @empty
+          <p>Nessun prodotto nei preferiti.</p>
+        @endforelse
       </div>
     </div>  
   </section>

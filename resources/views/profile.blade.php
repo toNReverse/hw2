@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Profilo - Bershka Style</title>
     <link rel="stylesheet" href="{{ url('css/profile.css') }}">
     <link rel="stylesheet" href="{{ url('css/hw1.css') }}">

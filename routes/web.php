@@ -15,8 +15,14 @@ Route::post('register', 'App\Http\Controllers\LoginController@do_register');
 
 Route::get('logout', 'App\Http\Controllers\LoginController@logout');
 
-Route::get('home', 'App\Http\Controllers\CollectionController@home');
+Route::get('home', 'App\Http\Controllers\HomeController@home');
 
-Route::get('profile', 'App\Http\Controllers\CollectionController@profile');
+Route::get('profile', 'App\Http\Controllers\HomeController@profile');
 
-Route::get('wishlist', 'App\Http\Controllers\CollectionController@wishlist');
+Route::get('wishlist', 'App\Http\Controllers\WishlistController@wishlist');
+
+
+Route::get('/fetch-cart', 'App\Http\Controllers\CartController@fetchCart');
+Route::post('/remove-from-cart', 'App\Http\Controllers\CartController@removeFromCart');
+
+Route::get('wishlist', 'App\Http\Controllers\WishlistController@wishlist');

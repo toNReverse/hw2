@@ -191,7 +191,7 @@ function updateExchangeRates(toCurrency) {
     if (fromCurrency === toCurrency) return;
 
     // Chiamata al file PHP per la conversione
-    fetch(`convert_currency.php?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
+    fetch(`/convert_currency?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
       .then(response => {
         if (!response.ok) throw new Error('Errore nella richiesta al server PHP');
         return response.json();
@@ -240,7 +240,7 @@ if (languageSelect) {
         return;
       }
 
-      fetch(`translate.php?text=${encodeURIComponent(originalText)}&to=${selectedLang}`)
+      fetch(`/translate?text=${encodeURIComponent(originalText)}&to=${selectedLang}`)
         .then(res => res.json())
         .then(data => {
           if (data && data.responseData && data.responseData.translatedText) {
@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // === FUNZIONI DI RICERCA ===
   function handleSearch(query) {
-    fetch(`search_content.php?q=${encodeURIComponent(query)}`)
+    fetch(`/search?q=${encodeURIComponent(query)}`)    
       .then(res => res.json())
       .then(data => {
         resultsContainer.innerHTML = "";
@@ -300,8 +300,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         Promise.all([
-          fetch("fetch-product.php").then(res => res.json()),
-          fetch("fetch-cart.php").then(res => res.json())
+          fetch("/fetch-products").then(res => res.json()),
+          fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
           data.shopping_results.forEach(item => {
             const favoriteItem = favorites.find(fav => fav.title === item.title);
@@ -395,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function removeFavorite(id) {
-    return fetch("remove-product.php", {
+    return fetch("/remove-product", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("price", product.extracted_price || "");
     formData.append("thumbnail", product.thumbnail || "");
   
-    return fetch("save-product.php", {
+    return fetch("/save-product", {
       method: "POST",
       body: formData,
     }).then(res => res.json());
@@ -443,10 +443,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function removeFromCart(title) {
-    return fetch("remove-from-cart.php", {
+    return fetch("/remove-from-cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),
+      credentials: 'same-origin'  // 
     }).then(res => res.json())
       .then(data => {
         if (!data.ok) return Promise.reject(data.error || "Errore");
@@ -459,7 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("thumbnail", product.thumbnail);
     formData.append("price", product.price);
 
-    return fetch("add-to-cart.php", {
+    return fetch("/add-to-cart", {
       method: "POST",
       body: formData,
     }).then(res => res.json())

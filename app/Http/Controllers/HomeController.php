@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth; // aggiungi in cima
 
 
-class CollectionController extends BaseController
+class HomeController extends BaseController
 {
     public function home()
     {
@@ -37,11 +37,4 @@ class CollectionController extends BaseController
         ]]);
     }
 
-    public function wishlist()
-    {
-        if (!Session::get('user_id')) {
-            return redirect('/login'); // ← QUESTO crea il ciclo!
-        }
-        return view('wishlist');
-    }
 }

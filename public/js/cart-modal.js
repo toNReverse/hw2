@@ -2,7 +2,7 @@ function loadCartItems() {
   const cartItemsContainer = document.getElementById("cart-items-container");
   const emptyCartContainer = document.getElementById("cart-empty-content");
 
-  fetch("fetch-cart.php")
+  fetch("/fetch-cart")
     .then(res => res.json())
     .then(cartItems => {
       if (!cartItems || cartItems.length === 0) {
@@ -41,22 +41,26 @@ function loadCartItems() {
 document.addEventListener("DOMContentLoaded", () => {
   loadCartItems();
 
+  // Prendo il token CSRF dal meta tag
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("remove-cart-item-btn")) {
       const title = e.target.dataset.title;
 
-      fetch("remove-from-cart.php", {
+      fetch("/remove-from-cart", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": csrfToken
+        },
         body: JSON.stringify({ title })
       })
       .then(res => res.json())
       .then(data => {
         if (data.ok) {
-          // Ricarica il carrello dopo la rimozione
           loadCartItems();
 
-          // Emetti evento custom per aggiornare icona nel search page
           const event = new CustomEvent("cart-item-removed", { detail: { title } });
           document.dispatchEvent(event);
 
