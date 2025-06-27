@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>01.Fragments/Icon/32px/Social/facebook-32</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M22.9844,20.4223 L21.0314,20.4223 L21.0314,27.3803 L18.1394,27.3803 L18.1394,20.4223 L16.7634,20.4223 L16.7634,17.9633 L18.1394,17.9633 L18.1394,16.3723 C18.1394,15.2333 18.6804,13.4533 21.0584,13.4533 L23.2024,13.4613 L23.2024,15.8483 L21.6464,15.8483 C21.3934,15.8483 21.0324,15.9753 21.0324,16.5183 L21.0324,17.9643 L23.2364,17.9643 L22.9844,20.4223 Z M20.0004,8.0003 C13.3834,8.0003 8.0004,13.3833 8.0004,20.0003 C8.0004,26.6163 13.3834,32.0003 20.0004,32.0003 C26.6164,32.0003 32.0004,26.6163 32.0004,20.0003 C32.0004,13.3833 26.6174,8.0003 20.0004,8.0003 L20.0004,8.0003 Z" id="path-1"></path>
+    </defs>
+    <g id="01.Fragments/Icon/32px/Social/facebook-32" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Fill-8" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+        <g id="00.Colors/01-Primary/01-Black" mask="url(#mask-2)" fill="#000000" fill-rule="nonzero">
+            <rect id="Rectangle" x="0" y="0" width="40" height="40"></rect>
+        </g>
+    </g>
+</svg>

@@ -80,11 +80,11 @@
         <div class="search-container">
             <img src="{{ url('img/54481.png') }}" alt="Search" class="search-icon"><span id="search-text">CERCA</span>
         </div>
-        @auth
-            <a href="{{ url('profile') }}" class="user-link">{{ Auth::user()->name }}</a>
+        @if(session('user_id'))
+            <a href="{{ url('profile') }}" class="user-link">{{ session('_agora_name') }}</a>
         @else
             <a href="{{ url('login') }}" id="login">Accedi</a>
-        @endauth
+        @endif
 
         <a>Carrello</a>
       </div>

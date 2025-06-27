@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>01.Fragments/Icon/32px/Social/youtube-32</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M18.5001,16.9999 L23.0001,19.9999 L18.5001,22.9999 L18.5001,16.9999 Z M27.3731,22.6869 C27.2921,23.6859 26.5321,24.9599 25.4721,25.1449 C22.0741,25.4089 18.0481,25.3759 14.5291,25.1449 C13.4321,25.0069 12.7101,23.6839 12.6291,22.6869 C12.4581,20.5889 12.4581,19.3959 12.6291,17.2979 C12.7101,16.3009 13.4491,14.9849 14.5291,14.8659 C18.0081,14.5729 22.0571,14.6359 25.4721,14.8659 C26.6931,14.9109 27.2921,16.1689 27.3731,17.1679 C27.5411,19.2649 27.5411,20.5889 27.3731,22.6869 L27.3731,22.6869 Z M20.0001,7.9999 C13.3731,7.9999 8.0001,13.3729 8.0001,19.9999 C8.0001,26.6269 13.3731,31.9999 20.0001,31.9999 C26.6271,31.9999 32.0001,26.6269 32.0001,19.9999 C32.0001,13.3719 26.6271,7.9999 20.0001,7.9999 L20.0001,7.9999 Z" id="path-1"></path>
+    </defs>
+    <g id="01.Fragments/Icon/32px/Social/youtube-32" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="Fill-8" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+        <g id="00.Colors/01-Primary/01-Black" mask="url(#mask-2)" fill="#000000" fill-rule="nonzero">
+            <rect id="Rectangle" x="0" y="0" width="40" height="40"></rect>
+        </g>
+    </g>
+</svg>

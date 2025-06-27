@@ -12,13 +12,29 @@ class CollectionController extends BaseController
 {
     public function home()
     {
-        if (!Auth::check()) {
-            return redirect('/login');
+        if (!Session::get('user_id')) {
+            return redirect('/login'); // ← QUESTO crea il ciclo!
         }
-    
         return view('home');
     }
+    public function profile()
+    {
+        $user_id = Session::get('user_id');
 
+        if (!$user_id) {
+            return redirect('/login');
+        }
 
+        $user = User::find($user_id);
 
+        if (!$user) {
+            abort(404); // O redirect con errore
+        }
+
+        // Passa i dati alla view
+        return view('profile', ['userinfo' => [
+            'name' => $user->name,
+            'email' => $user->email
+        ]]);
+    }
 }

@@ -16,3 +16,5 @@ Route::post('register', 'App\Http\Controllers\LoginController@do_register');
 Route::get('logout', 'App\Http\Controllers\LoginController@logout');
 
 Route::get('home', 'App\Http\Controllers\CollectionController@home');
+
+Route::get('profile', 'App\Http\Controllers\CollectionController@profile');

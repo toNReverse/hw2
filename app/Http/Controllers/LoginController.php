@@ -110,7 +110,8 @@ class LoginController extends BaseController
 
         // === LOGIN AUTOMATICO ===
         Session::put('user_id', $user->id);
-
+        Session::put('_agora_name', $user->name);
+        
         return redirect('/home');
 
     }
