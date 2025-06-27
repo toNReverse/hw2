@@ -3,9 +3,9 @@
 <head>
     <link rel="stylesheet" href="{{ url('css/login.css') }}">
     <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
-    <script src="{{ url('signup.js') }}" defer></script>
-    <script src="{{ url('hw1.js') }}" defer></script>
-    <script src="{{ url('cart-modal.js') }}" defer></script>
+    <script src="{{ url('js/signup.js') }}" defer></script>
+    <script src="{{ url('js/hw1.js') }}" defer></script>
+    <script src="{{ url('js/cart-modal.js') }}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="{{ url('favicon.png') }}">
     <meta charset="utf-8">

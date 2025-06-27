@@ -5,15 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth; // aggiungi in cima
+
 
 class CollectionController extends BaseController
 {
-    public function list()
+    public function home()
     {
-        //Controllo accesso
-        if (!Session::get('user_id')) {
+        if (!Auth::check()) {
             return redirect('/login');
         }
-        return Session::get('user_id'); //view('home');
+    
+        return view('home');
     }
+
+
+
 }

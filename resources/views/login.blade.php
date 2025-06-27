@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url('css/login.css') }}">
     <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
-    <script src="hw1.js" defer></script>
-    <script src="cart-modal.js" defer></script>
+    <script src="{{ url('js/hw1.js') }}" defer></script>
+    <script src="{{ url('js/cart-modal.js') }}" defer></script>
     <title>Accedi - BERSHKA</title>
 
 </head>
