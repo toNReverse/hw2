@@ -102,49 +102,22 @@ class LoginController extends BaseController
             return redirect('/home');
         }
 
-        if (strlen(request('name')) == 0) {
-            Session::put('error', ['Devi inserire il tuo nome']);
-            return redirect('register')->withInput();
+        $user = User::where('email', request('email'))->first();
+        if(!$user || !password_verify(request('password'), $user->password)) {
+            Session::put('error', ['Email o password errati']);
+            return redirect('login')->withInput();
         }
 
-        else if (strlen(request('email')) == 0) {
-            Session::put('error', ['Email obbligatoria']);
-            return redirect('register')->withInput();
-        }
+        // === LOGIN AUTOMATICO ===
+        Session::put('user_id', $user->id);
 
-        else if (!filter_var(request('email'), FILTER_VALIDATE_EMAIL)) {
-            Session::put('error', ['Indirizzo email non valido']);
-            return redirect('register')->withInput();
-        }
+        return redirect('/home');
 
-        else if (strlen(request('password')) == 0) {
-            Session::put('error', ['Password obbligatoria']);
-            return redirect('register')->withInput();
-        }
-
-        else if (strlen(request('password')) < 8) {
-            Session::put('error', ['La password deve contenere almeno 8 caratteri']);
-            return redirect('register')->withInput();
-        }
-
-        else if (strlen(request('confirm_password')) == 0) {
-            Session::put('error', ['Devi confermare la password']);
-            return redirect('register')->withInput();
-        }
-
-        else if (request('password') !== request('confirm_password')) {
-            Session::put('error', ['Le password non corrispondono']);
-            return redirect('register')->withInput();
-        }
-
-        else if (!request('allow')) {
-            Session::put('error', ['Devi accettare i termini e condizioni']);
-            return redirect('register')->withInput();
-        }
-
-        else if (User::where('email', request('email'))->first()) {
-            Session::put('error', ['Email già registrata']);
-            return redirect('register')->withInput();
-        }
+    }
+    // === LOGOUT ===
+    public function logout(){
+        // Elimina dati di sessione
+        Session::flush();
+        return redirect('login');
     }
 }

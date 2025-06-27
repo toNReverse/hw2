@@ -74,13 +74,14 @@
 
       <div id="linksRIGHT">
         <div class="search-container">
-          <img src="./img/54481.png" alt="Search" class="search-icon"><span id="search-text">CERCA</span>
+            <img src="{{ url('img/54481.png') }}" alt="Search" class="search-icon"><span id="search-text">CERCA</span>
         </div>
-<!-- Se l'utente è loggato ($isLoggedIn è true), il nome dell'utente preso dalla variabile di sessione "_agora_name". -->        <?php if ($isLoggedIn): ?>
-          <a href="profile.php" class="user-link"><?php echo $_SESSION["_agora_name"]; ?></a>
-        <?php else: ?>
-          <a href="login.php" id="login">Accedi</a>
-        <?php endif; ?>
+        @auth
+            <a href="{{ url('profile') }}" class="user-link">{{ Auth::user()->name }}</a>
+        @else
+            <a href="{{ url('login') }}" id="login">Accedi</a>
+        @endauth
+
         <a>Carrello</a>
       </div>
     </nav>
@@ -211,18 +212,15 @@
 
         <h5>Per continuare, accedi a BERSHKA.</h5>
 
-        <?php
-            // Verifica la presenza di errori
-            if (isset($error)) {
-                echo "<p class='error'>$error</p>";
-            }
-        ?>
+
 
         <form name="login" method="post">
+        @csrf
             <!-- Seleziono il valore di ogni campo sulla base dei valori inviati al server via POST -->
             <div class="email">
                 <label for="email">Email</label>
-                <input type="text" name="email" <?php if (isset($_POST["email"])) echo 'value="' . $_POST["email"] . '"'; ?>>
+                <input type="text" name="email" value="{{ old('email') }}">
+                <div><img src="{{ url('assets/close.svg') }}"/><span>Indirizzo email non valido</span></div>
             </div>
 
             <div class="password">
@@ -236,6 +234,17 @@
                     <input type="submit" value="ACCEDI">
                 </div>
             </div>
+            @if (isset($error))
+                @foreach ($error as $err)
+                    <div class="errorj"><span>{{ $err }}</span></div>
+                @endforeach
+            @endif
+
+            @if ($errors->any())
+                @foreach ($errors->all() as $err)
+                    <div class="errorj"><span>{{ $err }}</span></div>
+                @endforeach
+            @endif
         </form>
 
         <div class="signup">
