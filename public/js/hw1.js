@@ -395,11 +395,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function removeFavorite(id) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
     return fetch("/remove-product", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken // Aggiunto token CSRF
+      },
       body: JSON.stringify({ id }),
-    }).then(res => res.json())
+    })
+      .then(res => res.json())
       .then(data => {
         if (!data.ok) return Promise.reject(data.error || "Errore");
         return data;
@@ -407,6 +413,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function saveFavorite(product) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
     const formData = new FormData();
     formData.append("title", product.title || "");
     formData.append("snippet", product.snippet || "");
@@ -415,7 +423,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
     return fetch("/save-product", {
       method: "POST",
-      body: formData,
+      headers: {
+        "X-CSRF-TOKEN": csrfToken
+      },
+      body: formData
     }).then(res => res.json());
   }
 
@@ -455,14 +466,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function addToCart(product) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
     const formData = new FormData();
     formData.append("title", product.title);
     formData.append("thumbnail", product.thumbnail);
     formData.append("price", product.price);
-
+  
     return fetch("/add-to-cart", {
       method: "POST",
-      body: formData,
+      headers: {
+        "X-CSRF-TOKEN": csrfToken
+      },
+      body: formData
     }).then(res => res.json())
       .then(data => {
         if (!data.ok) return Promise.reject(data.error || "Errore");

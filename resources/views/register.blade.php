@@ -7,6 +7,7 @@
     <script src="{{ url('js/hw1.js') }}" defer></script>
     <script src="{{ url('js/cart-modal.js') }}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ url('favicon.png') }}">
     <meta charset="utf-8">
     <title>Iscriviti - BERSHKA</title>
