@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\APIController;
 
 
 Route::get('/', function () {
@@ -36,3 +37,6 @@ Route::post('/remove-product', [WishlistController::class, 'removeProduct']);
 Route::get('/fetch-cart', [CartController::class, 'loadCart']);
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
 Route::post('/remove-from-cart', [CartController::class, 'removeFromCart']);
+//api
+Route::get('/convert_currency', [ApiController::class, 'convertCurrency']);
+Route::get('/translate', [ApiController::class, 'translate']);

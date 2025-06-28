@@ -219,6 +219,8 @@ if (selector && menuTraslate) {
 }
 
 // Traduzione al cambio lingua
+const translationCache = {};
+
 if (languageSelect) {
   languageSelect.addEventListener('change', () => {
     const selectedLang = languageSelect.value;
@@ -227,36 +229,50 @@ if (languageSelect) {
       '#linksLEFT a, #gender-tabs a, .menu-content li, #linksRIGHT a, #search-text, .box-text h1, .product-text, .text_wrapper a, .gtl-text-container p, .cta-button, .suggested-text h2, .suggested-product h3, .spam-conto h2, .spam-conto p, .spam-conto a, .footer-container h3, .footer-container #traslate, .footer-container .small-text, .footer-container a, .modal-title, #facebook-access, .privacy-text, .login-options .traslate, .login-submit .traslate, .signup-link, .cart-header h2, .favorites-btn .traslate, .cart-empty-content h3, .cart-empty-content p, .cart-empty-content .discover-btn, .nav-menu a, .top-search-tag .traslate, .top-search-suggest h3, .product-name, .search-input-page'
     );
 
-    elements.forEach(el => {
-      const originalText = el.textContent.trim();
-      if (!originalText) return;
+    const translateSequentially = async () => {
+      for (const el of elements) {
+        const originalText = el.textContent.trim();
+        if (!originalText) continue;
 
-      if (!el.dataset.original) {
-        el.dataset.original = originalText;
-      }
+        // Salva testo originale (solo la prima volta)
+        if (!el.dataset.original) {
+          el.dataset.original = originalText;
+        }
 
-      if (selectedLang === 'it') {
-        el.textContent = el.dataset.original;
-        return;
-      }
+        // Se ritorniamo all'italiano
+        if (selectedLang === 'it') {
+          el.textContent = el.dataset.original;
+          continue;
+        }
 
-      fetch(`/translate?text=${encodeURIComponent(originalText)}&to=${selectedLang}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.responseData && data.responseData.translatedText) {
-            el.textContent = data.responseData.translatedText;
+        // Se già in cache, usa quella
+        if (translationCache[originalText]) {
+          el.textContent = translationCache[originalText];
+          continue;
+        }
+
+        try {
+          const res = await fetch(`/translate?text=${encodeURIComponent(originalText)}&to=${selectedLang}`);
+          const data = await res.json();
+
+          if (data.translatedText) {
+            el.textContent = data.translatedText;
+            translationCache[originalText] = data.translatedText; // salva in cache
           }
-        })
-        .catch(err => {
+        } catch (err) {
           console.error('Errore nella traduzione:', err);
-        });
-    });
+        }
+      }
 
-    if (menuTraslate) {
-      menuTraslate.classList.add('hidden');
-    }
+      if (menuTraslate) {
+        menuTraslate.classList.add('hidden');
+      }
+    };
+
+    translateSequentially();
   });
 }
+/* SEARCH PAGE */
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
   const resultsContainer = document.querySelector("#results") || document.getElementById("results-products");
