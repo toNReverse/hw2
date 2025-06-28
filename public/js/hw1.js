@@ -174,7 +174,7 @@ function updateExchangeRates(toCurrency, container = document) {
     let symbolLength = 0;
 
     for (const symbol of Object.values(symbols)) {
-      if (text.endsWith(symbol)) {
+      if (text.endsWith(symbol)) {  
         matchedSymbol = symbol;
         symbolLength = symbol.length;
         break;
