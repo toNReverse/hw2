@@ -22,17 +22,17 @@ Route::get('home', 'App\Http\Controllers\HomeController@home');
 
 Route::get('profile', 'App\Http\Controllers\HomeController@profile');
 
-Route::get('/fetch-cart', 'App\Http\Controllers\CartController@fetchCart');
-Route::post('/remove-from-cart', 'App\Http\Controllers\CartController@removeFromCart');
-
+//wishlist
 Route::get('wishlist', [WishlistController::class, 'wishlist']);
 Route::get('load-favorites', [WishlistController::class, 'loadFavorites']);
 Route::post('remove-product', [WishlistController::class, 'removeProduct']);
-
+//search
 Route::get('/search', [SearchController::class, 'search']);
 Route::get('/fetch-products', [SearchController::class, 'fetch']);
-
+//wishlist search
 Route::post('/save-product', [WishlistController::class, 'save']);
 Route::post('/remove-product', [WishlistController::class, 'removeProduct']);
-
+//cart search
+Route::get('/fetch-cart', [CartController::class, 'loadCart']);
 Route::post('/add-to-cart', [CartController::class, 'addToCart']);
+Route::post('/remove-from-cart', [CartController::class, 'removeFromCart']);

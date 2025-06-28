@@ -12,7 +12,7 @@ class User extends Model
         return $this->hasMany(\App\Models\Wishlist::class); // o Wishlist se è un altro model
     }
     public function cartItems()
-{
-    return $this->hasMany(\App\Models\Cart::class);
-}
+    {
+        return $this->hasMany(\App\Models\Cart::class);
+    }
 }

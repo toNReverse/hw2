@@ -452,39 +452,46 @@ document.addEventListener("DOMContentLoaded", () => {
       }).catch(() => alert("Errore nell'aggiunta al carrello"));
     }
   }
-
   function removeFromCart(title) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
     return fetch("/remove-from-cart", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken
+      },
       body: JSON.stringify({ title }),
-      credentials: 'same-origin'  // 
-    }).then(res => res.json())
-      .then(data => {
-        if (!data.ok) return Promise.reject(data.error || "Errore");
-      });
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.ok) return Promise.reject(data.error || "Errore");
+    });
   }
 
   function addToCart(product) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   
-    const formData = new FormData();
-    formData.append("title", product.title);
-    formData.append("thumbnail", product.thumbnail);
-    formData.append("price", product.price);
-  
     return fetch("/add-to-cart", {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         "X-CSRF-TOKEN": csrfToken
       },
-      body: formData
-    }).then(res => res.json())
-      .then(data => {
-        if (!data.ok) return Promise.reject(data.error || "Errore");
-      });
+      body: JSON.stringify({
+        title: product.title,
+        snippet: product.snippet || '',
+        price: product.price,
+        thumbnail: product.thumbnail
+      }),
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.ok) return Promise.reject(data.error || "Errore");
+    });
   }
-
   function updateCartIcon(title) {
     const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`);
     if (btn) {

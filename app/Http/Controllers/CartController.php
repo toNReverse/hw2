@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\Cart; 
+use Illuminate\Support\Facades\Log;
 
 
 class CartController extends BaseController
@@ -25,70 +27,81 @@ class CartController extends BaseController
 
         return response()->json($products);
     }
-
-    public function removeFromCart(Request $request)
-    {
-        $userid = Session::get('user_id');
-        if (!$userid) {
-            return response()->json(['ok' => false, 'error' => 'Utente non autenticato'], 401);
-        }
-
-        $title = $request->input('title');
-        if (!$title) {
-            return response()->json(['ok' => false, 'error' => 'Titolo mancante']);
-        }
-
-        $deleted = DB::table('cart')
-            ->where('user_id', $userid)
-            ->where('title', $title)
-            ->delete();
-
-        if ($deleted) {
-            return response()->json(['ok' => true]);
-        } else {
-            return response()->json(['ok' => false, 'error' => 'Nessun elemento rimosso']);
-        }
-    }
     public function addToCart(Request $request)
     {
-        $userId = session('user_id');
+        // Recupera user_id da sessione (ad esempio da 'user_id' salvato in login)
+        $userId = $request->session()->get('user_id');
         if (!$userId) {
-            return response()->json(['ok' => false, 'error' => 'Utente non autenticato']);
+            return response()->json(['ok' => false, 'error' => 'Utente non autenticato'], 401);
         }
-    
-        \Log::info('Richiesta addToCart', $request->all());
     
         $title = $request->input('title');
         $thumbnail = $request->input('thumbnail');
-        $price = $request->input('price');
+        $snippet = $request->input('snippet', '');
+        $price = $request->input('price', '');
     
-        if (!$title || !$thumbnail || !$price) {
-            return response()->json(['ok' => false, 'error' => 'Dati mancanti']);
+        if (!$title || !$thumbnail) {
+            return response()->json(['ok' => false, 'error' => 'Dati mancanti'], 400);
         }
     
-        try {
-            $exists = DB::table('cart')
-                ->where('user_id', $userId)
-                ->where('title', $title)
-                ->exists();
+        $exists = DB::table('cart')
+            ->where('user_id', $userId)
+            ->where('title', $title)
+            ->exists();
     
-            if ($exists) {
-                return response()->json(['ok' => false, 'error' => 'Prodotto già presente']);
-            }
+        if ($exists) {
+            return response()->json(['ok' => false, 'error' => 'Prodotto già nel carrello'], 409);
+        }
     
-            DB::table('cart')->insert([
-                'user_id' => $userId,
-                'title' => $title,
-                'thumbnail' => $thumbnail,
-                'price' => $price,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
+        $inserted = DB::table('cart')->insert([
+            'user_id' => $userId,
+            'title' => $title,
+            'snippet' => $snippet,
+            'price' => $price,
+            'thumbnail' => $thumbnail,
+        ]);
     
+        if ($inserted) {
             return response()->json(['ok' => true]);
-        } catch (\Exception $e) {
-            \Log::error('Errore addToCart: ' . $e->getMessage());
-            return response()->json(['ok' => false, 'error' => 'Errore server']);
+        } else {
+            return response()->json(['ok' => false, 'error' => 'Errore nell\'inserimento'], 500);
         }
     }
+    
+    public function removeFromCart(Request $request)
+    {
+        $userId = $request->session()->get('user_id');
+        if (!$userId) {
+            return response()->json(['ok' => false, 'error' => 'Utente non autenticato'], 401);
+        }
+    
+        $title = $request->input('title');
+        if (!$title) {
+            return response()->json(['ok' => false, 'error' => 'Titolo mancante'], 400);
+        }
+    
+        $deleted = DB::table('cart')
+            ->where('user_id', $userId)
+            ->where('title', $title)
+            ->delete();
+    
+        if ($deleted) {
+            return response()->json(['ok' => true]);
+        } else {
+            return response()->json(['ok' => false, 'error' => 'Errore nella rimozione'], 500);
+        }
+    }
+    public function loadCart(Request $request)
+{
+    $userId = $request->session()->get('user_id');
+    if (!$userId) {
+        return response()->json(['ok' => false, 'error' => 'Unauthorized'], 401);
+    }
+
+    $cartItems = DB::table('cart')
+        ->where('user_id', $userId)
+        ->get();
+
+    return response()->json($cartItems);
+}
 }

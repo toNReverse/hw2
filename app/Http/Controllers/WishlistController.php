@@ -52,35 +52,34 @@ class WishlistController extends BaseController
         }
     }
     public function save(Request $request)
-{
-    $userId = session('user_id');
-    if (!$userId) {
-        return response()->json(['ok' => false, 'error' => 'Utente non autenticato']);
+    {
+        $userId = session('user_id');
+        if (!$userId) {
+            return response()->json(['ok' => false, 'error' => 'Utente non autenticato']);
+        }
+
+        $title = $request->input('title');
+        $thumbnail = $request->input('thumbnail');
+        $price = $request->input('price');
+
+        if (!$title || !$thumbnail) {
+            return response()->json(['ok' => false, 'error' => 'Dati mancanti']);
+        }
+
+        // Controlla se esiste già
+        $existing = Wishlist::where('user_id', $userId)->where('title', $title)->first();
+        if ($existing) {
+            return response()->json(['ok' => false, 'error' => 'Prodotto già nei preferiti']);
+        }
+
+        // Crea nuovo record
+        $item = Wishlist::create([
+            'user_id' => $userId,
+            'title' => $title,
+            'thumbnail' => $thumbnail,
+            'price' => $price ?? 0
+        ]);
+
+        return response()->json(['ok' => true, 'id' => $item->id]);
     }
-
-    $title = $request->input('title');
-    $thumbnail = $request->input('thumbnail');
-    $price = $request->input('price');
-
-    if (!$title || !$thumbnail) {
-        return response()->json(['ok' => false, 'error' => 'Dati mancanti']);
-    }
-
-    // Controlla se esiste già
-    $existing = Wishlist::where('user_id', $userId)->where('title', $title)->first();
-    if ($existing) {
-        return response()->json(['ok' => false, 'error' => 'Prodotto già nei preferiti']);
-    }
-
-    // Crea nuovo record
-    $item = Wishlist::create([
-        'user_id' => $userId,
-        'title' => $title,
-        'thumbnail' => $thumbnail,
-        'price' => $price ?? 0
-    ]);
-
-    return response()->json(['ok' => true, 'id' => $item->id]);
-}
-
 }
