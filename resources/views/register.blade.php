@@ -208,7 +208,7 @@
   </div>
   <section class="signup-container">
     <div>
-        <div id="logo-log"><a href="{{ url('/') }}">BERSHKA</a></div>
+        <div id="logo-log"><a href="{{ url('home') }}">BERSHKA</a></div>
         <h5>Crea il tuo account BERSHKA.</h5>
 
         <form name="signup" method="post" enctype="multipart/form-data" autocomplete="off">

@@ -209,7 +209,7 @@
 
 <section class="login-container">
     <div>
-      <div id="logo-log"><a href="index.php">BERSHKA</a></div>
+      <div id="logo-log"><a href="{{ url('home') }}">BERSHKA</a></div>
 
         <h5>Per continuare, accedi a BERSHKA.</h5>
 
