@@ -1,11 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\WishlistController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\APIController;
-
 
 Route::get('/', function () {
     return redirect('login');
@@ -24,19 +19,22 @@ Route::get('home', 'App\Http\Controllers\HomeController@home');
 Route::get('profile', 'App\Http\Controllers\HomeController@profile');
 
 //wishlist
-Route::get('wishlist', [WishlistController::class, 'wishlist']);
-Route::get('load-favorites', [WishlistController::class, 'loadFavorites']);
-Route::post('remove-product', [WishlistController::class, 'removeProduct']);
+Route::get('wishlist', 'App\Http\Controllers\WishlistController@wishlist');
+Route::get('load-favorites', 'App\Http\Controllers\WishlistController@loadFavorites');
+Route::post('remove-product', 'App\Http\Controllers\WishlistController@removeProduct');
+
 //search
-Route::get('/search', [SearchController::class, 'search']);
-Route::get('/fetch-products', [SearchController::class, 'fetch']);
+Route::get('/search', 'App\Http\Controllers\SearchController@search');
+Route::get('/fetch-products', 'App\Http\Controllers\SearchController@fetch');
+
 //wishlist search
-Route::post('/save-product', [WishlistController::class, 'save']);
-Route::post('/remove-product', [WishlistController::class, 'removeProduct']);
+Route::post('/save-product', 'App\Http\Controllers\WishlistController@save');
+
 //cart search
-Route::get('/fetch-cart', [CartController::class, 'loadCart']);
-Route::post('/add-to-cart', [CartController::class, 'addToCart']);
-Route::post('/remove-from-cart', [CartController::class, 'removeFromCart']);
+Route::get('/fetch-cart', 'App\Http\Controllers\CartController@loadCart');
+Route::post('/add-to-cart', 'App\Http\Controllers\CartController@addToCart');
+Route::post('/remove-from-cart', 'App\Http\Controllers\CartController@removeFromCart');
+
 //api
-Route::get('/convert_currency', [ApiController::class, 'convertCurrency']);
-Route::get('/translate', [ApiController::class, 'translate']);
+Route::get('/convert_currency', 'App\Http\Controllers\APIController@convertCurrency');
+Route::get('/translate', 'App\Http\Controllers\APIController@translate');

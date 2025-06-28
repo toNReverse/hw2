@@ -154,6 +154,7 @@ if (currencySelector && menuValuta) {
 if (currencyDropdown && menuValuta) {
   currencyDropdown.addEventListener('change', () => {
     const selectedCurrency = currencyDropdown.value;
+    currentCurrency = selectedCurrency; // aggiorna la variabile globale
     console.log('Valuta selezionata:', selectedCurrency);
     menuValuta.classList.add('hidden');
     updateExchangeRates(selectedCurrency);
@@ -161,9 +162,9 @@ if (currencyDropdown && menuValuta) {
 }
 
 // Funzione per aggiornare i prezzi in base alla valuta selezionata
-function updateExchangeRates(toCurrency) {
-  const priceSelectors = ['.price', '.price-red', '.price-old'];
-  const priceElements = document.querySelectorAll(priceSelectors.join(', '));
+function updateExchangeRates(toCurrency, container = document) {
+  const priceSelectors = ['.price', '.price-red', '.price-old', '.wl-price', '.cart-item-price', '.product-price'];
+  const priceElements = container.querySelectorAll(priceSelectors.join(', '));
 
   priceElements.forEach(priceElement => {
     const text = priceElement.textContent.trim();
@@ -206,6 +207,22 @@ function updateExchangeRates(toCurrency) {
         console.error('Errore:', error);
       });
   });
+}
+// === Auto-conversione su nuovi elementi dinamici (es. dopo una ricerca) ===
+let currentCurrency = 'EUR'; // o valuta di default
+if (currencyDropdown) {
+  currentCurrency = currencyDropdown.value;
+}
+
+// Controlla se il contenitore dei risultati dinamici esiste
+const dynamicContainer = document.getElementById('results-container'); // <-- Cambia se il tuo container ha altro ID
+
+if (dynamicContainer) {
+  const observer = new MutationObserver(() => {
+    updateExchangeRates(currentCurrency);
+  });
+
+  observer.observe(dynamicContainer, { childList: true, subtree: true });
 }
 const selector = document.getElementById('language-selector');
 const menuTraslate = document.getElementById('language-menu');
@@ -335,11 +352,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  function createProductCard(item, isFav, isInCart) {
+  function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
     const card = document.createElement("div");
     card.className = "product-card p-c-search";
     card.dataset.item = JSON.stringify(item);
-
+  
     card.innerHTML = `
       <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
       <div class="product-info">
@@ -359,6 +376,10 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     `;
+  
+    // Applica conversione alla singola card
+    updateExchangeRates(toCurrency, card);
+  
     return card;
   }
 
