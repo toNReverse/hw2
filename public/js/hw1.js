@@ -529,6 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
     });
   }
+  
   function updateCartIcon(title) {
     const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`);
     if (btn) {
