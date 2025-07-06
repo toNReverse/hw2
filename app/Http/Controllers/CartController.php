@@ -20,7 +20,7 @@ class CartController extends BaseController
             return response()->json([]);
         }
 
-        // Query al database
+        // Query al database per ottenere i prodotti nel carrello dell'utente
         $products = DB::table('cart')
             ->where('user_id', $userId)
             ->get();
@@ -39,11 +39,13 @@ class CartController extends BaseController
         $thumbnail = $request->input('thumbnail');
         $snippet = $request->input('snippet', '');
         $price = $request->input('price', '');
-    
+        
+        // Verifica che i campi obbligatori siano presenti
         if (!$title || !$thumbnail) {
             return response()->json(['ok' => false, 'error' => 'Dati mancanti'], 400);
         }
     
+        // Controlla se il prodotto è già nel carrello
         $exists = DB::table('cart')
             ->where('user_id', $userId)
             ->where('title', $title)
@@ -52,7 +54,8 @@ class CartController extends BaseController
         if ($exists) {
             return response()->json(['ok' => false, 'error' => 'Prodotto già nel carrello'], 409);
         }
-    
+        
+        // Inserisce il prodotto nel carrello
         $inserted = DB::table('cart')->insert([
             'user_id' => $userId,
             'title' => $title,

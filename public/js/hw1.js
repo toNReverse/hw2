@@ -297,17 +297,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
   const topSearchTags = document.querySelector(".top-search") || document.querySelector(".top-search-tags");
 
-  let timeout = null;
+  let timeout = null; // Per gestire il ritardo nel digitare (debounce)
 
   input?.addEventListener("input", () => {
     clearTimeout(timeout);
     const query = input.value.trim();
 
+    // Se l’utente ha scritto meno di 3 caratteri, effettuo una ricerca 
     if (query.length < 3) {
       showSuggestions();
       return;
     }
-
+    // Aspetta 500ms prima di eseguire la ricerca ed evitare il debounce
     timeout = setTimeout(() => handleSearch(query), 500);
   });
 
@@ -317,11 +318,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.closest(".cart-btn")) toggleCart(e.target.closest(".cart-btn"));
   });
 
+  // Quando un elemento viene rimosso dal carrello, aggiorna l'icona
   document.addEventListener("cart-item-removed", (e) => updateCartIcon(e.detail.title));
 
   // === FUNZIONI DI RICERCA ===
   function handleSearch(query) {
-    fetch(`/search?q=${encodeURIComponent(query)}`)    
+    fetch(`/search?q=${encodeURIComponent(query)}`)    // Chiamata al backend per la ricerca
       .then(res => res.json())
       .then(data => {
         resultsContainer.innerHTML = "";
@@ -332,6 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
+        // Ottengo preferiti e prodotti nel carrello per segnare quelli già salvati
         Promise.all([
           fetch("/fetch-products").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
@@ -355,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
     const card = document.createElement("div");
     card.className = "product-card p-c-search";
-    card.dataset.item = JSON.stringify(item);
+    card.dataset.item = JSON.stringify(item); // Salva dati prodotto
   
     card.innerHTML = `
       <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
@@ -378,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   
     // Applica conversione alla singola card
-    updateExchangeRates(toCurrency, card);
+    updateExchangeRates(toCurrency, card);  
   
     return card;
   }
@@ -430,7 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }).catch(() => alert("Errore nel salvataggio"));
     }
   }
-  
+  // POST per rimuovere un prodotto dai preferiti
   function removeFavorite(id) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   
@@ -449,6 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
   
+  // POST per salvare un nuovo preferito
   function saveFavorite(product) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   

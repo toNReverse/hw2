@@ -25,6 +25,7 @@ function fetchResponse(response) {
 
 function checkEmail(event) {
     const emailInput = document.querySelector('.email input');
+    // Regex per validare il formato email (Trova tutte le parole o sequenze di caratteri che rispettano questo schema)
     if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(emailInput.value).toLowerCase())) {
         document.querySelector('.email span').textContent = "Email non valida";
         document.querySelector('.email').classList.add('errorj');

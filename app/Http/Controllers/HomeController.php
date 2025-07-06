@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth; // aggiungi in cima
 
 
 class HomeController extends BaseController

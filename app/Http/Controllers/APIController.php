@@ -14,12 +14,14 @@ class ApiController extends BaseController
     {
         $text = $request->query('text');
         $to = $request->query('to');
-        $from = 'it';
+        $from = 'it';   // lingua di partenza fissa
     
+        // Verifica parametri obbligatori
         if (!$text || !$to) {
             return response()->json(['error' => 'Parametri mancanti'], 400);
         }
-    
+
+        // Costruzione URL per chiamata API esterna
         $url = "https://api.mymemory.translated.net/get?q=" . urlencode($text) . "&langpair={$from}|{$to}";
     
         $ch = curl_init($url);

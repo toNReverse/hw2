@@ -43,8 +43,8 @@ class SearchController extends BaseController
 
         return response($response)->header('Content-Type', 'application/json');
     }
+    
     //RICERCA
-
     public function fetch()
     {
         $userId = session('user_id');

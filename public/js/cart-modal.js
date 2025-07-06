@@ -1,9 +1,11 @@
+// Funzione che carica gli articoli presenti nel carrello
 function loadCartItems() {
   const cartItemsContainer = document.getElementById("cart-items-container");
   const emptyCartContainer = document.getElementById("cart-empty-content");
 
+  // Chiedo al server la lista dei prodotti presenti nel carrello
   fetch("/fetch-cart")
-    .then(res => res.json())
+    .then(res => res.json()) // Converto la risposta del server in un oggetto JavaScript
     .then(cartItems => {
       if (!cartItems || cartItems.length === 0) {
         cartItemsContainer.classList.add("hidden");
@@ -12,10 +14,12 @@ function loadCartItems() {
         return;
       }
 
+      // Se ci sono articoli nel carrello, li mostro e nascondo il messaggio di carrello vuoto
       cartItemsContainer.innerHTML = "";
       cartItemsContainer.classList.remove("hidden");
       emptyCartContainer.classList.add("hidden");
 
+      // Per ogni prodotto ricevuto dal server, creo un elemento HTML
       cartItems.forEach(item => {
         const card = document.createElement("div");
         card.classList.add("cart-item");
@@ -45,9 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   document.addEventListener("click", (e) => {
+    // Rimuovo un articolo dal carrello
     if (e.target.classList.contains("remove-cart-item-btn")) {
       const title = e.target.dataset.title;
 
+      // Invio una richiesta POST al server per rimuovere l'articolo dal carrello
       fetch("/remove-from-cart", {
         method: "POST",
         headers: { 
@@ -59,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(data => {
         if (data.ok) {
+          // Se la rimozione ha avuto successo, ricarico il carrello
           loadCartItems();
 
           const event = new CustomEvent("cart-item-removed", { detail: { title } });
