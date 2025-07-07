@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;          
-use App\Models\Wishlist;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+use App\Models\Cart;
+
 
 use Illuminate\Support\Facades\Http;
 
@@ -29,11 +32,12 @@ class ApiController extends BaseController
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         curl_close($ch);
-    
+        
         if ($response === false || $curlError) {
             return response()->json(['error' => 'Errore nella richiesta API di traduzione: ' . $curlError], 500);
         }
-    
+        
+        // Decodifica la risposta JSON
         $data = json_decode($response, true);
     
         if (!$data || !isset($data['responseData']['translatedText'])) {
@@ -77,6 +81,52 @@ class ApiController extends BaseController
             'converted' => $converted,
             'rate' => $rate,
             'symbol' => $to
+        ]);
+    }
+    public function createSession(Request $request)
+    {        
+        $stripePublicKey = 'pk_test_la_tua_chiave_pubblica'; // CHIAVE PUBBLICA
+        $stripeSecretKey = 'sk_test_la_tua_chiave_segreta'; // CHIAVE SEGRETA 
+
+        Stripe::setApiKey($stripeSecretKey);
+
+        $userId = session('user_id');
+        if (!$userId) {
+            return response()->json(['error' => 'Utente non autenticato'], 403);
+        }
+
+        $cartItems = Cart::where('user_id', $userId)->get();
+
+        if ($cartItems->isEmpty()) {
+            return response()->json(['error' => 'Carrello vuoto'], 400);
+        }
+
+        $lineItems = [];
+
+        foreach ($cartItems as $item) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $item->title,
+                    ],
+                    'unit_amount' => intval($item->price * 100),
+                ],
+                'quantity' => 1
+            ];
+        }
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => url('/grazie'),
+            'cancel_url' => url('/'),
+        ]);
+
+        return response()->json([
+            'id' => $session->id,
+            'publicKey' => $stripePublicKey
         ]);
     }
 }

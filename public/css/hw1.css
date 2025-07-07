@@ -1985,3 +1985,160 @@ cursor: pointer;
   cursor: pointer;
   margin-left: 10px;
 }
+.checkout-button {
+  display: block;
+  text-align: center;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  padding: 14px;
+  margin: 16px auto 10px auto;
+  width: 60%;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.2s ease-in-out;
+}
+
+.checkout-button:hover {
+  background-color: #218838;
+  cursor: pointer;
+}
+
+.checkout-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 60px;
+  font-family: sans-serif;
+  margin-top: 50px;
+}
+
+.checkout-main {
+  width: 60%;
+}
+
+.checkout-summary {
+  width: 30%;
+  border-left: 1px solid #ddd;
+  padding-left: 40px;
+}
+
+.checkout-steps {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.current-step {
+  font-weight: bold;
+}
+
+.disabled-step {
+  color: #aaa;
+}
+
+.checkout-title {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.payment-method {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  background-color: white;
+}
+
+.payment-method img {
+  height: 20px;
+}
+
+.checkout-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.go-back {
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+}
+
+.continue-button {
+  padding: 12px 32px;
+  background-color: #ccc;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.continue-button.active {
+  background-color: black;
+  pointer-events: auto;
+}
+
+.checkout-summary h3 {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.summary-item img {
+  width: 70px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.summary-item p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+.price-red {
+  color: red;
+  font-weight: bold;
+}
+
+.price-old {
+  text-decoration: line-through;
+  font-size: 12px;
+  color: gray;
+  margin-left: 6px;
+}
+
+.summary-totals {
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+}
+
+.summary-totals p {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.total-iva {
+  font-weight: bold;
+}

@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
     <script src="{{ url('js/hw1.js') }}" defer></script>
     <script src="{{ url('js/cart-modal.js') }}" defer></script>
-
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{ url('js/checkout.js') }}" defer></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -109,6 +110,8 @@
 
         <!-- Contenitore prodotti -->
         <div class="cart-items hidden" id="cart-items-container"></div>
+
+        <a href="#" class="checkout-button">PAGA ORA</a>
 
         <!-- Stato carrello vuoto -->
         <div class="cart-empty-content" id="cart-empty-content">

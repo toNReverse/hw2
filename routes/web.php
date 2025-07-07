@@ -38,3 +38,4 @@ Route::post('/remove-from-cart', 'App\Http\Controllers\CartController@removeFrom
 //api
 Route::get('/convert_currency', 'App\Http\Controllers\APIController@convertCurrency');
 Route::get('/translate', 'App\Http\Controllers\APIController@translate');
+Route::post('/checkout/session', 'App\Http\Controllers\ApiController@createSession');
