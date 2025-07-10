@@ -9,7 +9,6 @@ function checkName(event) {
 }
 
 function jsonCheckEmail(json) {
-    // Controllo il campo exists ritornato dal JSON
     if (formStatus.email = !json.exists) {
         document.querySelector('.email').classList.remove('errorj');
     } else {
@@ -18,7 +17,7 @@ function jsonCheckEmail(json) {
     }
 }
 
-function fetchResponse(response) {
+function fetchResponse(response) {  // controllo se la risposta HTTP è ok
     if (!response.ok) return null;
     return response.json();
 }
@@ -63,7 +62,7 @@ function checkSignup(event) {
     }
 }
 
-const formStatus = {'upload': true};
+const formStatus = {'upload': true};    // per tracciare lo stato di validazione dei campi
 document.querySelector('.name input').addEventListener('blur', checkName);
 document.querySelector('.email input').addEventListener('blur', checkEmail);
 document.querySelector('.password input').addEventListener('blur', checkPassword);

@@ -5,13 +5,14 @@
   <meta charset="UTF-8">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Preferiti</title>
-  <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
   <link rel="stylesheet" href="{{ url('css/wish-list.css') }}">
+  <link rel="stylesheet" href="{{ url('css/hw1.css') }}">
   <script src="{{ url('js/hw1.js') }}" defer></script>
   <script src="{{ url('js/wish-list.js') }}" defer></script>
   <script src="{{ url('js/cart-modal.js') }}" defer></script>
   <script src="https://js.stripe.com/v3/"></script>
   <script src="{{ url('js/checkout.js') }}" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>

@@ -552,7 +552,7 @@ footer {
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 880px) {
   body {
       width: 100%;
       height: auto;
@@ -931,7 +931,11 @@ footer {
       margin: 0;
       white-space: nowrap;
   }
-
+}
+@media (max-width: 500px) {
+  .modal {
+    width: 80vw; /* oppure ad esempio 300px o 90% */
+  }
 }
 /* SIDE PAGE LOGIN */
 .modal{
@@ -1409,6 +1413,7 @@ line-height: 1;
   padding: 32px;
   position: relative;
 }
+
 /*MENU -> DONNA, UOMO, BSKTEEN*/
 .nav-content {
   padding: 40px 60px;
@@ -2141,4 +2146,9 @@ cursor: pointer;
 
 .total-iva {
   font-weight: bold;
+}
+@media (max-width: 768px) {
+  .product-card {
+    width: calc((100% - 10px) / 2);
+  }
 }

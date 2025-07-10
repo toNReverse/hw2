@@ -14,7 +14,7 @@ class WishlistController extends BaseController
         if (!$userId) return redirect('login');
     
         $favorites = Wishlist::where('user_id', $userId)->get();
-        return view('wishlist', compact('favorites'));
+        return view('wishlist', compact('favorites'));  // Passa i preferiti alla vista
     }
 
     public function loadFavorites()
@@ -26,7 +26,7 @@ class WishlistController extends BaseController
 
         $favorites = Wishlist::where('user_id', $userId)->get();
 
-        return response()->json($favorites);
+        return response()->json($favorites);    // Restituisce i preferiti come JSON (caricamento dinamico)
     }
 
     public function removeProduct(Request $request)

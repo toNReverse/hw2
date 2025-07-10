@@ -17,6 +17,7 @@ class SearchController extends BaseController
             return response()->json(['error' => 'Query mancante']);
         }
 
+        // interrogo l'API di SerpApi per Google Shopping
         $url = 'https://serpapi.com/search?' . http_build_query([
             'engine' => 'google_shopping',
             'q' => $query,
@@ -27,10 +28,10 @@ class SearchController extends BaseController
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($ch, CURLOPT_URL, $url);    // Imposta l’URL di destinazione della richiesta.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // resistuisce il risultato come stringa.
 
-        $response = curl_exec($ch);
+        $response = curl_exec($ch); // esegue la richiesta e assegna la risposta
         
         if (curl_errno($ch)) {
             return response()->json(['error' => curl_error($ch)]);

@@ -10,40 +10,34 @@ class CartController extends BaseController
 {
     public function fetchCart(Request $request)
     {
-        // Recupera user_id dalla sessione
         $userId = session('user_id');
 
         if (!$userId) {
             return response()->json([]);
         }
 
-        // Query al database per ottenere i prodotti nel carrello dell'utente
         $products = DB::table('cart')
-            ->where('user_id', $userId)
-            ->get();
+            ->where('user_id', $userId) // query al database
+            ->get();    // recupera i risultati come una collezione di oggetti.
 
         return response()->json($products);
     }
     public function addToCart(Request $request)
     {
-        // Recupera user_id da sessione (ad esempio da 'user_id' salvato in login)
         $userId = $request->session()->get('user_id');
         if (!$userId) {
             return response()->json(['ok' => false, 'error' => 'Utente non autenticato'], 401);
         }
         
-        // Recupera i dati del prodotto dalla richiesta
         $title = $request->input('title');
         $thumbnail = $request->input('thumbnail');
         $snippet = $request->input('snippet', '');
         $price = $request->input('price', '');
         
-        // Verifica che i campi obbligatori siano presenti
         if (!$title || !$thumbnail) {
             return response()->json(['ok' => false, 'error' => 'Dati mancanti'], 400);
         }
     
-        // Controlla se il prodotto è già nel carrello
         $exists = DB::table('cart')
             ->where('user_id', $userId)
             ->where('title', $title)
@@ -53,7 +47,6 @@ class CartController extends BaseController
             return response()->json(['ok' => false, 'error' => 'Prodotto già nel carrello'], 409);
         }
         
-        // Inserisce il prodotto nel carrello
         $inserted = DB::table('cart')->insert([
             'user_id' => $userId,
             'title' => $title,
@@ -103,6 +96,6 @@ class CartController extends BaseController
         ->where('user_id', $userId)
         ->get();
 
-    return response()->json($cartItems);
+    return response()->json($cartItems);    // restituisce i dati del carrello come JSON
 }
 }

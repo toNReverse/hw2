@@ -15,7 +15,7 @@ class LoginController extends BaseController
         }
 
         $error = Session::get('error');
-        Session::forget('error');
+        Session::forget('error');   // Rimuove l'errore dalla sessione dopo averlo recuperato
 
         return view('register')->with('error', $error);
     }
@@ -91,7 +91,7 @@ class LoginController extends BaseController
         }
 
         $error = Session::get('error');
-        Session::forget('error');
+        Session::forget('error');   // Rimuove l'errore dalla sessione dopo averlo recuperato
 
         return view('login')->with('error', $error);
     }
@@ -102,7 +102,7 @@ class LoginController extends BaseController
             return redirect('/home');
         }
 
-        $user = User::where('email', request('email'))->first();
+        $user = User::where('email', request('email'))->first();    // cerca l'utente in base all'email nel db
         if(!$user || !password_verify(request('password'), $user->password)) {
             Session::put('error', ['Email o password errati']);
             return redirect('login')->withInput();

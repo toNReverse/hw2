@@ -11,12 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
         "Content-Type": "application/json"
       }
-    })
+    })  
       .then((res) => res.json())
       .then((data) => {
         if (data.id && data.publicKey) {
           const stripe = Stripe(data.publicKey); // Chiave pubblica ricevuta dal controller
-          stripe.redirectToCheckout({ sessionId: data.id });
+          stripe.redirectToCheckout({ sessionId: data.id });  // inizializza Stripe 
         } else {
           console.error("Errore lato server:", data.error || "Session ID mancante");
         }

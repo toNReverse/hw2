@@ -116,4 +116,28 @@ body {
   color: black;
   text-decoration: underline;
 }
+/* Responsività: sidebar sopra e main sotto su schermi piccoli */
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    margin-top: 40px;
+  }
+  
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
+  
+  .main-content {
+    margin-top: 20px;
+  }
+  
+  .order-images img {
+    width: 50px;
+    height: 50px;
+  }
+}
 

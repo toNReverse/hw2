@@ -2,7 +2,7 @@ function chiudiAltriModaliNav(activeModalId) {
   const navModals = ['#nav-donna', '#nav-uomo', '#nav-bskteen'];
   
   navModals.forEach(modalId => {
-      if (modalId !== activeModalId) {
+      if (modalId !== activeModalId) {  // nascondo tutti i modali tranne quello passato come parametro
           const modal = document.querySelector(modalId);
           if (modal) {
               modal.classList.remove('show');
@@ -13,12 +13,12 @@ function chiudiAltriModaliNav(activeModalId) {
 }
 
 function apriModale(triggerSelector, modalSelector) {
-document.querySelector(triggerSelector).addEventListener('click', () => {
-  chiudiAltriModaliNav(modalSelector); 
-  const modale = document.querySelector(modalSelector);
-  modale.classList.remove('hidden');
-  modale.classList.add('show');
-});
+  document.querySelector(triggerSelector).addEventListener('click', () => {
+    chiudiAltriModaliNav(modalSelector); 
+    const modale = document.querySelector(modalSelector);
+    modale.classList.remove('hidden');
+    modale.classList.add('show');
+  });
 }
 
 function chiudiModale(closeBtnSelector, modalSelector) {
@@ -65,7 +65,7 @@ document.querySelector('.search-container').addEventListener('click', function()
   elementsToToggle.forEach(el => {
       if (el) {
           el.style.display = isSearchOpen ? 'none' : '';
-      }
+      } 
   });
 
   navbar.style.borderBottom = isSearchOpen ? 'none' : '1px solid black';
@@ -121,7 +121,7 @@ const symbols = {
   AUD: 'A$',
   CHF: 'CHF'
 };
-
+// creo un oggetto per la conversione inversa (es. da € a EUR)
 const reverseSymbols = {};
 for (const code in symbols) {
   reverseSymbols[symbols[code]] = code;
@@ -136,10 +136,10 @@ if (currencySelector && menuValuta) {
 if (currencyDropdown && menuValuta) {
   currencyDropdown.addEventListener('change', () => {
     const selectedCurrency = currencyDropdown.value;
-    currentCurrency = selectedCurrency; 
+    currentCurrency = selectedCurrency;   //	aggiorno la variabile currentCurrency.
     console.log('Valuta selezionata:', selectedCurrency);
     menuValuta.classList.add('hidden');
-    updateExchangeRates(selectedCurrency);
+    updateExchangeRates(selectedCurrency); // aggiorno i prezzi 
   });
 }
 
@@ -147,12 +147,13 @@ function updateExchangeRates(toCurrency, container = document) {
   const priceSelectors = ['.price', '.price-red', '.price-old', '.wl-price', '.cart-item-price', '.product-price'];
   const priceElements = container.querySelectorAll(priceSelectors.join(', '));
 
-  priceElements.forEach(priceElement => {
+  priceElements.forEach(priceElement => { // tolgo spazi prima/dopo.
     const text = priceElement.textContent.trim();
 
     let matchedSymbol = null;
     let symbolLength = 0;
 
+    // Controllo il testo se termina con un simbolo
     for (const symbol of Object.values(symbols)) {
       if (text.endsWith(symbol)) {  
         matchedSymbol = symbol;
@@ -160,15 +161,14 @@ function updateExchangeRates(toCurrency, container = document) {
         break;
       }
     }
-
     if (!matchedSymbol) return;
 
     const amountText = text.slice(0, -symbolLength).trim().replace(',', '.');
     const amount = parseFloat(amountText);
-    if (isNaN(amount)) return;
+    if (isNaN(amount)) return;  // skip se numero non valido
 
     const fromCurrency = reverseSymbols[matchedSymbol];
-    if (fromCurrency === toCurrency) return;
+    if (fromCurrency === toCurrency) return;  // se la valuta è già quella selezionata, non faccio nulla
 
     fetch(`/convert_currency?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
       .then(response => {
@@ -186,22 +186,24 @@ function updateExchangeRates(toCurrency, container = document) {
       });
   });
 }
-// === Auto-conversione su nuovi elementi dinamici (es. dopo una ricerca) ===
+// dopo una ricerca conversione su nuovi elementi 
 let currentCurrency = 'EUR'; 
 if (currencyDropdown) {
   currentCurrency = currencyDropdown.value;
 }
 
-// Controlla se il contenitore dei risultati dinamici esiste
+// controllo se il contenitore dei risultati dinamici esiste
 const dynamicContainer = document.getElementById('results-container'); 
 
 if (dynamicContainer) {
-  const observer = new MutationObserver(() => {
+  const observer = new MutationObserver(() => { // oggetto per osservare le modifiche al DOM
     updateExchangeRates(currentCurrency);
   });
 
   observer.observe(dynamicContainer, { childList: true, subtree: true });
 }
+
+// TRADUZIONE
 const selector = document.getElementById('language-selector');
 const menuTraslate = document.getElementById('language-menu');
 const languageSelect = document.getElementById('language');
@@ -212,7 +214,6 @@ if (selector && menuTraslate) {
   });
 }
 
-// Traduzione al cambio lingua
 const translationCache = {};
 
 if (languageSelect) {
@@ -237,6 +238,7 @@ if (languageSelect) {
           continue;
         }
 
+        // controllo se il testo è già tradotto, ed evito di fare una nuova richiesta
         if (translationCache[originalText]) {
           el.textContent = translationCache[originalText];
           continue;
@@ -284,7 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
     timeout = setTimeout(() => handleSearch(query), 500);
   });
 
-  // === EVENT LISTENERS ===
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("fav-icon")) toggleFavorite(e.target);
     if (e.target.closest(".cart-btn")) toggleCart(e.target.closest(".cart-btn"));
@@ -305,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        Promise.all([
+        Promise.all([   //eseguire più fetch in parallelo e aspettare che tutte siano complete
           fetch("/fetch-products").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
@@ -328,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
     const card = document.createElement("div");
     card.className = "product-card p-c-search";
-    card.dataset.item = JSON.stringify(item); 
+    card.dataset.item = JSON.stringify(item);   // salvo l'oggetto 
   
     card.innerHTML = `
       <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
@@ -503,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function updateCartIcon(title) {
-    const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`);
+    const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`); // evito caratteri speciali
     if (btn) {
       const img = btn.querySelector("img.cart-icon");
       if (img) {

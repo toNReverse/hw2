@@ -65,6 +65,7 @@ class ApiController extends BaseController
             return response()->json(['error' => 'Errore nella richiesta API'], 500);
         }
     
+        // Decodifica la risposta JSON
         $data = json_decode($response, true);
     
         if (!isset($data['conversion_rates'][$to])) {   

@@ -4,7 +4,8 @@ function loadCartItems() {
 
   fetch("/fetch-cart")
     .then(res => res.json()) 
-    .then(cartItems => {
+    .then(cartItems => {  
+      // Controlla se il carrello è vuoto
       if (!cartItems || cartItems.length === 0) {
         cartItemsContainer.classList.add("hidden");
         emptyCartContainer.classList.remove("hidden");
@@ -29,7 +30,7 @@ function loadCartItems() {
           <button class="remove-cart-item-btn" data-title="${item.title}" aria-label="Rimuovi dal carrello">&times;</button>
         `;
 
-        cartItemsContainer.appendChild(card);
+        cartItemsContainer.appendChild(card); // Aggiungi il card al contenitore
       });
     })
     .catch(err => {
@@ -60,8 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.ok) {
           loadCartItems();
 
-          const event = new CustomEvent("cart-item-removed", { detail: { title } });
-          document.dispatchEvent(event);
+          const event = new CustomEvent("cart-item-removed", { detail: { title } });  // crea un evento personalizzato passando il titolo dell'elemento rimosso
+          document.dispatchEvent(event);  // invia l'evento così altre parti del codice possono reagire.
 
         } else {
           alert("Errore nella rimozione dal carrello");

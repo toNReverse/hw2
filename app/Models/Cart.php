@@ -8,7 +8,6 @@ use App\Models\User;
 class Cart extends Model
 {
     protected $table = 'cart';
-
     public $timestamps = false;
 
     protected $fillable = ['user_id', 'title', 'snippet', 'price', 'thumbnail'];
