@@ -7,7 +7,7 @@ use App\Models\User;
 
 class Cart extends Model
 {
-    protected $table = 'cart';  // nome esatto della tabella
+    protected $table = 'cart';
 
     public $timestamps = false;
 

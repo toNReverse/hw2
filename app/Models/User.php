@@ -9,7 +9,7 @@ class User extends Model
 
     public function favorites()
     {
-        return $this->hasMany(\App\Models\Wishlist::class); // o Wishlist se è un altro model
+        return $this->hasMany(\App\Models\Wishlist::class);
     }
     public function cartItems()
     {

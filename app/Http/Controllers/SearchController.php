@@ -11,7 +11,7 @@ class SearchController extends BaseController
     public function search(Request $request)
     {
         $api_key = 'e3a3168197aff840ead92196f9a83b60f7bed2bb448b209a7ec169e5f8456887';
-        $query = $request->query('q');
+        $query = $request->query('q'); 
 
         if (empty($query)) {
             return response()->json(['error' => 'Query mancante']);
@@ -26,10 +26,12 @@ class SearchController extends BaseController
         ]);
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
 
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+
+        $response = curl_exec($ch);
+        
         if (curl_errno($ch)) {
             return response()->json(['error' => curl_error($ch)]);
         }
@@ -41,7 +43,7 @@ class SearchController extends BaseController
             return response()->json(['error' => "Errore HTTP: $http_code"]);
         }
 
-        return response($response)->header('Content-Type', 'application/json');
+        return response($response)->header('Content-Type', 'application/json'); // Restituisce la risposta JSON
     }
     
     //RICERCA
@@ -49,7 +51,7 @@ class SearchController extends BaseController
     {
         $userId = session('user_id');
         if (!$userId) {
-            return response()->json([]); // o un errore, se preferisci
+            return response()->json([]); 
         }
     
         return \App\Models\Wishlist::where('user_id', $userId)->get();

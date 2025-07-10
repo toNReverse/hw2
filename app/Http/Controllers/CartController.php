@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
-use App\Models\Cart; 
-use Illuminate\Support\Facades\Log;
 
 
 class CartController extends BaseController
@@ -34,7 +31,8 @@ class CartController extends BaseController
         if (!$userId) {
             return response()->json(['ok' => false, 'error' => 'Utente non autenticato'], 401);
         }
-    
+        
+        // Recupera i dati del prodotto dalla richiesta
         $title = $request->input('title');
         $thumbnail = $request->input('thumbnail');
         $snippet = $request->input('snippet', '');
@@ -82,7 +80,7 @@ class CartController extends BaseController
         if (!$title) {
             return response()->json(['ok' => false, 'error' => 'Titolo mancante'], 400);
         }
-    
+        
         $deleted = DB::table('cart')
             ->where('user_id', $userId)
             ->where('title', $title)

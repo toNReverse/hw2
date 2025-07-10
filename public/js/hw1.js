@@ -1,4 +1,3 @@
-// funzione per chiudere tutte le finestre di navigazione tranne quella attiva
 function chiudiAltriModaliNav(activeModalId) {
   const navModals = ['#nav-donna', '#nav-uomo', '#nav-bskteen'];
   
@@ -13,17 +12,15 @@ function chiudiAltriModaliNav(activeModalId) {
   });
 }
 
-// Funzione per aprire una modale
 function apriModale(triggerSelector, modalSelector) {
 document.querySelector(triggerSelector).addEventListener('click', () => {
-  chiudiAltriModaliNav(modalSelector); // chiudi gli altri prima di aprire il nuovo
+  chiudiAltriModaliNav(modalSelector); 
   const modale = document.querySelector(modalSelector);
   modale.classList.remove('hidden');
   modale.classList.add('show');
 });
 }
 
-// Funzione per chiudere una modale
 function chiudiModale(closeBtnSelector, modalSelector) {
 document.querySelector(closeBtnSelector).addEventListener('click', () => {
   const modale = document.querySelector(modalSelector);
@@ -32,7 +29,6 @@ document.querySelector(closeBtnSelector).addEventListener('click', () => {
 });
 }
 
-// Apertura e chiusura modale "Carrello"
 apriModale('#linksRIGHT a:nth-child(3)', '#cart-modal');
 chiudiModale('.close-btn-cart', '#cart-modal');
 
@@ -45,12 +41,10 @@ navModale.addEventListener('mouseleave', () => {
 });
 }
 
-// Apertura modali Navbar
 apriModale('#linksLEFT a:nth-child(1)', '#nav-donna');
 apriModale('#linksLEFT a:nth-child(2)', '#nav-uomo');
 apriModale('#linksLEFT a:nth-child(3)', '#nav-bskteen');
 
-// Chiusura modali Navbar al mouseleave
 chiudiNavModale('#nav-donna');
 chiudiNavModale('#nav-uomo');
 chiudiNavModale('#nav-bskteen');
@@ -68,22 +62,18 @@ document.querySelector('.search-container').addEventListener('click', function()
 
   isSearchOpen = !isSearchOpen;
 
-  // Toggle elements visibility
   elementsToToggle.forEach(el => {
       if (el) {
           el.style.display = isSearchOpen ? 'none' : '';
       }
   });
 
-  // Toglie il bordo da navbar 
   navbar.style.borderBottom = isSearchOpen ? 'none' : '1px solid black';
 
 
-  // Attiva/disattiva la visibilità dell'input di ricerca
   searchText.textContent = isSearchOpen ? "CHIUDI" : "CERCA";
   searchIcon.src = isSearchOpen ? "./img/close-icon.png" : "./img/54481.png";
   
-  // Cambia il colore del testo dell'input di ricerca
   document.querySelector('#search-page').style.display = isSearchOpen ? 'block' : 'none';
 
 
@@ -101,7 +91,6 @@ closeBtn.addEventListener('click', () => {
 menu.classList.remove('open');
 });
 
-// Tabs attivi
 const tabs = document.querySelectorAll('#gender-tabs .tab');
 const contents = document.querySelectorAll('.menu-content');
 
@@ -109,11 +98,9 @@ tabs.forEach(tab => {
 tab.addEventListener('click', function (e) {
   e.preventDefault();
 
-  // Aggiorna tab attivo
   tabs.forEach(t => t.classList.remove('active'));
   this.classList.add('active');
 
-  // Mostra il contenuto corretto
   const gender = this.getAttribute('data-gender');
   contents.forEach(content => content.style.display = 'none');
   document.getElementById('menu-' + gender).style.display = 'block';
@@ -121,12 +108,10 @@ tab.addEventListener('click', function (e) {
 });
 
 /* API CONVERSIONE VALUTA */
-// Selettori DOM
 const currencySelector = document.getElementById('currency-selector');
 const menuValuta = document.getElementById('currency-menu');
 const currencyDropdown = document.getElementById('currency');
 
-// Mappa simboli-valuta
 const symbols = {
   EUR: '€',
   USD: '$',
@@ -137,31 +122,27 @@ const symbols = {
   CHF: 'CHF'
 };
 
-// Mappa inversa simbolo -> codice
 const reverseSymbols = {};
 for (const code in symbols) {
   reverseSymbols[symbols[code]] = code;
 }
 
-// Mostra/nasconde il menu valuta
 if (currencySelector && menuValuta) {
   currencySelector.addEventListener("click", () => {
     menuValuta.classList.toggle("hidden");
   });
 }
 
-// Quando si seleziona una nuova valuta
 if (currencyDropdown && menuValuta) {
   currencyDropdown.addEventListener('change', () => {
     const selectedCurrency = currencyDropdown.value;
-    currentCurrency = selectedCurrency; // aggiorna la variabile globale
+    currentCurrency = selectedCurrency; 
     console.log('Valuta selezionata:', selectedCurrency);
     menuValuta.classList.add('hidden');
     updateExchangeRates(selectedCurrency);
   });
 }
 
-// Funzione per aggiornare i prezzi in base alla valuta selezionata
 function updateExchangeRates(toCurrency, container = document) {
   const priceSelectors = ['.price', '.price-red', '.price-old', '.wl-price', '.cart-item-price', '.product-price'];
   const priceElements = container.querySelectorAll(priceSelectors.join(', '));
@@ -169,7 +150,6 @@ function updateExchangeRates(toCurrency, container = document) {
   priceElements.forEach(priceElement => {
     const text = priceElement.textContent.trim();
 
-    // Trova il simbolo alla fine
     let matchedSymbol = null;
     let symbolLength = 0;
 
@@ -183,7 +163,6 @@ function updateExchangeRates(toCurrency, container = document) {
 
     if (!matchedSymbol) return;
 
-    // Estrai e converti l'importo
     const amountText = text.slice(0, -symbolLength).trim().replace(',', '.');
     const amount = parseFloat(amountText);
     if (isNaN(amount)) return;
@@ -191,7 +170,6 @@ function updateExchangeRates(toCurrency, container = document) {
     const fromCurrency = reverseSymbols[matchedSymbol];
     if (fromCurrency === toCurrency) return;
 
-    // Chiamata al file PHP per la conversione
     fetch(`/convert_currency?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
       .then(response => {
         if (!response.ok) throw new Error('Errore nella richiesta al server PHP');
@@ -209,13 +187,13 @@ function updateExchangeRates(toCurrency, container = document) {
   });
 }
 // === Auto-conversione su nuovi elementi dinamici (es. dopo una ricerca) ===
-let currentCurrency = 'EUR'; // o valuta di default
+let currentCurrency = 'EUR'; 
 if (currencyDropdown) {
   currentCurrency = currencyDropdown.value;
 }
 
 // Controlla se il contenitore dei risultati dinamici esiste
-const dynamicContainer = document.getElementById('results-container'); // <-- Cambia se il tuo container ha altro ID
+const dynamicContainer = document.getElementById('results-container'); 
 
 if (dynamicContainer) {
   const observer = new MutationObserver(() => {
@@ -228,7 +206,6 @@ const selector = document.getElementById('language-selector');
 const menuTraslate = document.getElementById('language-menu');
 const languageSelect = document.getElementById('language');
 
-// Mostra/nasconde il menu a tendina
 if (selector && menuTraslate) {
   selector.addEventListener('click', () => {
     menuTraslate.classList.toggle('hidden');
@@ -251,18 +228,15 @@ if (languageSelect) {
         const originalText = el.textContent.trim();
         if (!originalText) continue;
 
-        // Salva testo originale (solo la prima volta)
         if (!el.dataset.original) {
           el.dataset.original = originalText;
         }
 
-        // Se ritorniamo all'italiano
         if (selectedLang === 'it') {
           el.textContent = el.dataset.original;
           continue;
         }
 
-        // Se già in cache, usa quella
         if (translationCache[originalText]) {
           el.textContent = translationCache[originalText];
           continue;
@@ -274,7 +248,7 @@ if (languageSelect) {
 
           if (data.translatedText) {
             el.textContent = data.translatedText;
-            translationCache[originalText] = data.translatedText; // salva in cache
+            translationCache[originalText] = data.translatedText; 
           }
         } catch (err) {
           console.error('Errore nella traduzione:', err);
@@ -297,18 +271,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const suggestTitle = document.querySelector(".search-suggest-text") || document.querySelector(".suggest-title");
   const topSearchTags = document.querySelector(".top-search") || document.querySelector(".top-search-tags");
 
-  let timeout = null; // Per gestire il ritardo nel digitare (debounce)
+  let timeout = null; 
 
   input?.addEventListener("input", () => {
     clearTimeout(timeout);
     const query = input.value.trim();
 
-    // Se l’utente ha scritto meno di 3 caratteri, effettuo una ricerca 
     if (query.length < 3) {
       showSuggestions();
       return;
     }
-    // Aspetta 500ms prima di eseguire la ricerca ed evitare il debounce
     timeout = setTimeout(() => handleSearch(query), 500);
   });
 
@@ -318,12 +290,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.closest(".cart-btn")) toggleCart(e.target.closest(".cart-btn"));
   });
 
-  // Quando un elemento viene rimosso dal carrello, aggiorna l'icona
   document.addEventListener("cart-item-removed", (e) => updateCartIcon(e.detail.title));
 
   // === FUNZIONI DI RICERCA ===
   function handleSearch(query) {
-    fetch(`/search?q=${encodeURIComponent(query)}`)    // Chiamata al backend per la ricerca
+    fetch(`/search?q=${encodeURIComponent(query)}`)   
       .then(res => res.json())
       .then(data => {
         resultsContainer.innerHTML = "";
@@ -334,7 +305,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        // Ottengo preferiti e prodotti nel carrello per segnare quelli già salvati
         Promise.all([
           fetch("/fetch-products").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
@@ -358,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
     const card = document.createElement("div");
     card.className = "product-card p-c-search";
-    card.dataset.item = JSON.stringify(item); // Salva dati prodotto
+    card.dataset.item = JSON.stringify(item); 
   
     card.innerHTML = `
       <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
@@ -380,7 +350,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
   
-    // Applica conversione alla singola card
     updateExchangeRates(toCurrency, card);  
   
     return card;
@@ -413,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
       removeFavorite(item.id).then(() => {
         icon.src = "img/hearth-search-page.png";
         icon.title = "Aggiungi ai preferiti";
-        // Aggiorna il dataset rimuovendo id
+
         delete item.id;
         card.dataset.item = JSON.stringify(item);
       }).catch(() => alert("Errore nella rimozione"));
@@ -422,7 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.ok) {
           icon.src = "img/filled-hearth-search-page.png";
           icon.title = "Rimuovi dai preferiti";
-          // Aggiorna il dataset con l'id ricevuto dal server
+
           if (data.id) {
             item.id = data.id;
             card.dataset.item = JSON.stringify(item);
@@ -433,7 +402,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }).catch(() => alert("Errore nel salvataggio"));
     }
   }
-  // POST per rimuovere un prodotto dai preferiti
+
   function removeFavorite(id) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   
@@ -441,7 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken // Aggiunto token CSRF
+        "X-CSRF-TOKEN": csrfToken 
       },
       body: JSON.stringify({ id }),
     })
@@ -452,7 +421,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
   
-  // POST per salvare un nuovo preferito
   function saveFavorite(product) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   

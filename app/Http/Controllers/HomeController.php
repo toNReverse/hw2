@@ -12,7 +12,7 @@ class HomeController extends BaseController
     public function home()
     {
         if (!Session::get('user_id')) {
-            return redirect('/login'); // ← QUESTO crea il ciclo!
+            return redirect('/login'); 
         }
         return view('home');
     }
@@ -24,10 +24,10 @@ class HomeController extends BaseController
             return redirect('/login');
         }
 
-        $user = User::find($user_id);
+        $user = User::find($user_id); 
 
         if (!$user) {
-            abort(404); // O redirect con errore
+            abort(404);
         }
         // Passa i dati alla view
         return view('profile', ['userinfo' => [
