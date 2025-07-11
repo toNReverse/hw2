@@ -221,7 +221,6 @@
             <div class="email">
                 <label for="email">Email</label>
                 <input type="text" name="email" value="{{ old('email') }}">
-                <div><img src="{{ url('assets/close.svg') }}"/><span>Indirizzo email non valido</span></div>
             </div>
 
             <div class="password">

@@ -86,16 +86,16 @@ class CartController extends BaseController
         }
     }
     public function loadCart(Request $request)
-{
-    $userId = $request->session()->get('user_id');
-    if (!$userId) {
-        return response()->json(['ok' => false, 'error' => 'Unauthorized'], 401);
+    {
+        $userId = $request->session()->get('user_id');
+        if (!$userId) {
+            return response()->json([]); 
+        }
+    
+        $cartItems = DB::table('cart')
+            ->where('user_id', $userId)
+            ->get();
+    
+        return response()->json($cartItems);
     }
-
-    $cartItems = DB::table('cart')
-        ->where('user_id', $userId)
-        ->get();
-
-    return response()->json($cartItems);    // restituisce i dati del carrello come JSON
-}
 }

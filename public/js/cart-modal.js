@@ -1,21 +1,32 @@
 function loadCartItems() {
   const cartItemsContainer = document.getElementById("cart-items-container");
   const emptyCartContainer = document.getElementById("cart-empty-content");
+  const checkoutButton = document.getElementById("checkout-button");
 
   fetch("/fetch-cart")
-    .then(res => res.json()) 
-    .then(cartItems => {  
-      // Controlla se il carrello è vuoto
-      if (!cartItems || cartItems.length === 0) {
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      return res.json();
+    })
+    .then(cartItems => {
+      if (!Array.isArray(cartItems)) {
+        throw new Error("Formato dati non valido dal server");
+      }
+
+      if (cartItems.length === 0) {
         cartItemsContainer.classList.add("hidden");
         emptyCartContainer.classList.remove("hidden");
         cartItemsContainer.innerHTML = "";
+        if (checkoutButton) checkoutButton.style.display = "none";  // Nascondi bottone se vuoto
         return;
       }
 
       cartItemsContainer.innerHTML = "";
       cartItemsContainer.classList.remove("hidden");
       emptyCartContainer.classList.add("hidden");
+      if (checkoutButton) checkoutButton.style.display = "";  // Ripristina stile CSS originale (per centramento)
 
       cartItems.forEach(item => {
         const card = document.createElement("div");
@@ -30,19 +41,23 @@ function loadCartItems() {
           <button class="remove-cart-item-btn" data-title="${item.title}" aria-label="Rimuovi dal carrello">&times;</button>
         `;
 
-        cartItemsContainer.appendChild(card); // Aggiungi il card al contenitore
+        cartItemsContainer.appendChild(card);
       });
     })
     .catch(err => {
-      console.error("Errore nel caricamento del carrello:", err);
+      console.error("Errore nel caricamento del carrello:", err.message);
+      cartItemsContainer.innerHTML = "";
+      cartItemsContainer.classList.add("hidden");
       emptyCartContainer.classList.remove("hidden");
+      if (checkoutButton) checkoutButton.style.display = "none";  // Nascondi bottone in caso di errore
     });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCartItems();
 
-  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+  const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
 
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("remove-cart-item-btn")) {
@@ -50,25 +65,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       fetch("/remove-from-cart", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "X-CSRF-TOKEN": csrfToken
         },
         body: JSON.stringify({ title })
       })
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok) {
-          loadCartItems();
-
-          const event = new CustomEvent("cart-item-removed", { detail: { title } });  // crea un evento personalizzato passando il titolo dell'elemento rimosso
-          document.dispatchEvent(event);  // invia l'evento così altre parti del codice possono reagire.
-
-        } else {
-          alert("Errore nella rimozione dal carrello");
-        }
-      })
-      .catch(() => alert("Errore nella comunicazione col server"));
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            loadCartItems(); // Ricarica il carrello
+            document.dispatchEvent(new CustomEvent("cart-item-removed", { detail: { title } }));
+          } else {
+            alert("Errore nella rimozione dal carrello");
+          }
+        })
+        .catch(() => {
+          alert("Errore nella comunicazione col server");
+        });
     }
   });
 });

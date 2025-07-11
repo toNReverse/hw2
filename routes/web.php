@@ -11,6 +11,7 @@ Route::post('login', 'App\Http\Controllers\LoginController@do_login');
 
 Route::get('register', 'App\Http\Controllers\LoginController@register_form');
 Route::post('register', 'App\Http\Controllers\LoginController@do_register');
+Route::get('/check-email', 'App\Http\Controllers\LoginController@checkEmail');
 
 Route::get('logout', 'App\Http\Controllers\LoginController@logout');
 

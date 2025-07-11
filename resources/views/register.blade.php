@@ -8,7 +8,6 @@
     <script src="{{ url('js/cart-modal.js') }}" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" type="image/png" href="{{ url('favicon.png') }}">
     <meta charset="utf-8">
     <title>Iscriviti - BERSHKA</title>
 </head>
@@ -211,31 +210,26 @@
         <div id="logo-log"><a href="{{ url('home') }}">BERSHKA</a></div>
         <h5>Crea il tuo account BERSHKA.</h5>
 
-        <form name="signup" method="post" enctype="multipart/form-data" autocomplete="off">
-            @csrf
+        <form name="signup" method="post" action="{{ url('register') }}" enctype="multipart/form-data" autocomplete="off">            @csrf
 
             <div class="name">
                 <label for="name">Nome</label>
                 <input type="text" name="name" value="{{ old('name') }}">
-                <div><img src="{{ url('assets/close.svg') }}"/><span>Devi inserire il tuo nome</span></div>
             </div>
 
             <div class="email">
                 <label for="email">Email</label>
                 <input type="text" name="email" value="{{ old('email') }}">
-                <div><img src="{{ url('assets/close.svg') }}"/><span>Indirizzo email non valido</span></div>
             </div>
 
             <div class="password">
                 <label for="password">Password</label>
                 <input type="password" name="password">
-                <div><img src="{{ url('assets/close.svg') }}"/><span>Inserisci almeno 8 caratteri</span></div>
             </div>
 
             <div class="confirm_password">
                 <label for="confirm_password">Conferma Password</label>
                 <input type="password" name="confirm_password">
-                <div><img src="{{ url('assets/close.svg') }}"/><span>Le password non coincidono</span></div>
             </div>
 
             <div class="allow"> 

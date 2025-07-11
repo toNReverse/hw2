@@ -108,7 +108,7 @@
         <!-- Contenitore prodotti -->
         <div class="cart-items hidden" id="cart-items-container"></div>
 
-        <a href="#" class="checkout-button">PAGA ORA</a>
+        <a href="#" id="checkout-button" class="checkout-button">PAGA ORA</a>
 
         <!-- Stato carrello vuoto -->
         <div class="cart-empty-content" id="cart-empty-content">
