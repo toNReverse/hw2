@@ -4,33 +4,25 @@ function loadCartItems() {
   const checkoutButton = document.getElementById("checkout-button");
 
   fetch("/fetch-cart")
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-      return res.json();
-    })
+    .then(res => res.ok ? res.json() : [])
     .then(cartItems => {
-      if (!Array.isArray(cartItems)) {
-        throw new Error("Formato dati non valido dal server");
-      }
-
-      if (cartItems.length === 0) {
+      if (!Array.isArray(cartItems) || cartItems.length === 0) {
+        cartItemsContainer.innerHTML = "";
         cartItemsContainer.classList.add("hidden");
         emptyCartContainer.classList.remove("hidden");
-        cartItemsContainer.innerHTML = "";
-        if (checkoutButton) checkoutButton.style.display = "none";  // Nascondi bottone se vuoto
+        if (checkoutButton) checkoutButton.style.display = "none";
         return;
       }
 
+      // Se ci sono prodotti nel carrello
       cartItemsContainer.innerHTML = "";
       cartItemsContainer.classList.remove("hidden");
       emptyCartContainer.classList.add("hidden");
-      if (checkoutButton) checkoutButton.style.display = "";  // Ripristina stile CSS originale (per centramento)
+      if (checkoutButton) checkoutButton.style.display = "";
 
       cartItems.forEach(item => {
         const card = document.createElement("div");
-        card.classList.add("cart-item");
+        card.className = "cart-item";
 
         card.innerHTML = `
           <img src="${item.thumbnail}" alt="${item.title}" class="cart-item-image">
@@ -45,11 +37,11 @@ function loadCartItems() {
       });
     })
     .catch(err => {
-      console.error("Errore nel caricamento del carrello:", err.message);
+      console.warn("Errore nel caricamento del carrello, mostro stato vuoto.");
       cartItemsContainer.innerHTML = "";
       cartItemsContainer.classList.add("hidden");
       emptyCartContainer.classList.remove("hidden");
-      if (checkoutButton) checkoutButton.style.display = "none";  // Nascondi bottone in caso di errore
+      if (checkoutButton) checkoutButton.style.display = "none";
     });
 }
 

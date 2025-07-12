@@ -47,14 +47,5 @@ class SearchController extends BaseController
         return response($response)->header('Content-Type', 'application/json'); // Restituisce la risposta JSON
     }
     
-    //RICERCA
-    public function fetch()
-    {
-        $userId = session('user_id');
-        if (!$userId) {
-            return response()->json([]); 
-        }
-    
-        return \App\Models\Wishlist::where('user_id', $userId)->get();
-    }
+
 }

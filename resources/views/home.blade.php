@@ -115,7 +115,7 @@
           <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
           <h3>Carrello vuoto</h3>
           <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
-          <a href="{{ url('wish-list') }}" class="discover-btn">VAI AI PREFERITI</a>
+          <a href="{{ url('wishlist') }}" class="discover-btn">VAI AI PREFERITI</a>
         </div>
       </div>
     </div>

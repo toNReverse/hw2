@@ -307,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         Promise.all([   //eseguire più fetch in parallelo e aspettare che tutte siano complete
-          fetch("/fetch-products").then(res => res.json()),
+          fetch("/load-favorites").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
           data.shopping_results.forEach(item => {
@@ -514,3 +514,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+/*
+come funziona cart-modal
+dove carica gli elementi del carrello
+utilizzare al meglio i models per ogni funzione
+definire meglio cosa è asincrono e cosa no
+
+
+
+*/

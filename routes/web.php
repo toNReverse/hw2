@@ -26,7 +26,6 @@ Route::post('remove-product', 'App\Http\Controllers\WishlistController@removePro
 
 //search
 Route::get('/search', 'App\Http\Controllers\SearchController@search');
-Route::get('/fetch-products', 'App\Http\Controllers\SearchController@fetch');
 
 //wishlist search
 Route::post('/save-product', 'App\Http\Controllers\WishlistController@save');
@@ -39,4 +38,4 @@ Route::post('/remove-from-cart', 'App\Http\Controllers\CartController@removeFrom
 //api
 Route::get('/convert_currency', 'App\Http\Controllers\APIController@convertCurrency');
 Route::get('/translate', 'App\Http\Controllers\APIController@translate');
-Route::post('/checkout/session', 'App\Http\Controllers\ApiController@createSession');
+Route::post('/checkout/session', 'App\Http\Controllers\APIController@createSession');
