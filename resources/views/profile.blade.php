@@ -109,9 +109,18 @@
         </div>
 
         <!-- Contenitore prodotti -->
-        <div class="cart-items hidden" id="cart-items-container"></div>
-
-        <a href="#" class="checkout-button">PAGA ORA</a>
+        <div class="cart-items hidden" id="cart-items-container">
+          <div class="cart-item template hidden">
+            <img src="" alt="" class="cart-item-image">
+            <div class="cart-item-info">
+              <p class="cart-item-title"></p>
+              <p class="cart-item-price"></p>
+            </div>
+            <button class="remove-cart-item-btn" data-title="" aria-label="Rimuovi dal carrello">&times;</button>
+          </div>
+        </div>
+        
+        <a href="#" id="checkout-button" class="checkout-button">PAGA ORA</a>
 
         <!-- Stato carrello vuoto -->
         <div class="cart-empty-content" id="cart-empty-content">

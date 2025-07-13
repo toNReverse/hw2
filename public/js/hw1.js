@@ -298,15 +298,17 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`/search?q=${encodeURIComponent(query)}`)   
       .then(res => res.json())
       .then(data => {
-        resultsContainer.innerHTML = "";
+        resultsContainer.replaceChildren();
         hideSuggestions();
 
         if (!data.shopping_results || data.shopping_results.length === 0) {
-          resultsContainer.innerHTML = "<p>Nessun risultato trovato.</p>";
+          const empty = document.createElement("p");
+          empty.textContent = "Nessun risultato trovato.";
+          resultsContainer.appendChild(empty);
           return;
         }
 
-        Promise.all([   //eseguire più fetch in parallelo e aspettare che tutte siano complete
+        Promise.all([
           fetch("/load-favorites").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
@@ -322,42 +324,93 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       })
       .catch(() => {
-        resultsContainer.innerHTML = "<p>Errore nel caricamento dei risultati.</p>";
+        const error = document.createElement("p");
+        error.textContent = "Errore nel caricamento dei risultati.";
+        resultsContainer.replaceChildren(error);
       });
   }
 
   function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
     const card = document.createElement("div");
     card.className = "product-card p-c-search";
-    card.dataset.item = JSON.stringify(item);   // salvo l'oggetto 
-  
-    card.innerHTML = `
-      <img class="product-image" src="${item.thumbnail}" alt="${item.title}">
-      <div class="product-info">
-        <div class="left-info">
-          <p class="product-name">${item.title}</p>
-          <div class="price-line">
-            <span class="product-price">${item.extracted_price ? item.extracted_price.toFixed(2) + " €" : ""}</span>
-            ${item.discount ? `<span class="discount">${item.discount}</span>` : ""}
-          </div>
-          ${item.previous_price ? `<p class="price-old">${item.previous_price.toFixed(2)} €</p>` : ""}
-        </div>
-        <div class="right-icon">
-          <img class="fav-icon" src="${isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png'}" alt="cuoricino" title="${isFav ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}">
-          <a class="cart-btn" data-title="${item.title}" data-thumbnail="${item.thumbnail}" data-price="${item.extracted_price || 0}">
-            <img class="cart-icon" src="${isInCart ? 'img/remove-from-cart.png' : 'img/add-to-cart.png'}" alt="carrello" title="${isInCart ? 'Rimuovi dal carrello' : 'Aggiungi al carrello'}">
-          </a>
-        </div>
-      </div>
-    `;
-  
+    card.dataset.item = JSON.stringify(item);
+
+    const img = document.createElement("img");
+    img.className = "product-image";
+    img.src = item.thumbnail;
+    img.alt = item.title;
+
+    const productInfo = document.createElement("div");
+    productInfo.className = "product-info";
+
+    const leftInfo = document.createElement("div");
+    leftInfo.className = "left-info";
+
+    const name = document.createElement("p");
+    name.className = "product-name";
+    name.textContent = item.title;
+
+    const priceLine = document.createElement("div");
+    priceLine.className = "price-line";
+
+    const price = document.createElement("span");
+    price.className = "product-price";
+    if (item.extracted_price) price.textContent = item.extracted_price.toFixed(2) + " €";
+    priceLine.appendChild(price);
+
+    if (item.discount) {
+      const discount = document.createElement("span");
+      discount.className = "discount";
+      discount.textContent = item.discount;
+      priceLine.appendChild(discount);
+    }
+
+    leftInfo.appendChild(name);
+    leftInfo.appendChild(priceLine);
+
+    if (item.previous_price) {
+      const oldPrice = document.createElement("p");
+      oldPrice.className = "price-old";
+      oldPrice.textContent = item.previous_price.toFixed(2) + " €";
+      leftInfo.appendChild(oldPrice);
+    }
+
+    const rightIcon = document.createElement("div");
+    rightIcon.className = "right-icon";
+
+    const favIcon = document.createElement("img");
+    favIcon.className = "fav-icon";
+    favIcon.src = isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png';
+    favIcon.alt = "cuoricino";
+    favIcon.title = isFav ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti";
+
+    const cartBtn = document.createElement("a");
+    cartBtn.className = "cart-btn";
+    cartBtn.dataset.title = item.title;
+    cartBtn.dataset.thumbnail = item.thumbnail;
+    cartBtn.dataset.price = item.extracted_price || 0;
+
+    const cartIcon = document.createElement("img");
+    cartIcon.className = "cart-icon";
+    cartIcon.src = isInCart ? 'img/remove-from-cart.png' : 'img/add-to-cart.png';
+    cartIcon.alt = "carrello";
+    cartIcon.title = isInCart ? "Rimuovi dal carrello" : "Aggiungi al carrello";
+
+    cartBtn.appendChild(cartIcon);
+    rightIcon.appendChild(favIcon);
+    rightIcon.appendChild(cartBtn);
+
+    productInfo.appendChild(leftInfo);
+    productInfo.appendChild(rightIcon);
+    card.appendChild(img);
+    card.appendChild(productInfo);
+
     updateExchangeRates(toCurrency, card);  
-  
     return card;
   }
 
   function showSuggestions() {
-    resultsContainer.innerHTML = "";
+    resultsContainer.replaceChildren();
     if (suggestSection) suggestSection.style.display = "block";
     if (suggestTitle) suggestTitle.style.display = "block";
     if (topSearchTags) topSearchTags.style.display = "flex";

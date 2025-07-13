@@ -3,42 +3,41 @@ function loadCartItems() {
   const emptyCartContainer = document.getElementById("cart-empty-content");
   const checkoutButton = document.getElementById("checkout-button");
 
+  const template = cartItemsContainer.querySelector(".cart-item.template");
+
   fetch("/fetch-cart")
     .then(res => res.ok ? res.json() : [])
     .then(cartItems => {
+      // Pulizia: rimuovi tutti tranne il template
+      [...cartItemsContainer.children].forEach(child => {
+        if (!child.classList.contains("template")) child.remove();
+      });
+
       if (!Array.isArray(cartItems) || cartItems.length === 0) {
-        cartItemsContainer.innerHTML = "";
         cartItemsContainer.classList.add("hidden");
         emptyCartContainer.classList.remove("hidden");
         if (checkoutButton) checkoutButton.style.display = "none";
         return;
       }
 
-      // Se ci sono prodotti nel carrello
-      cartItemsContainer.innerHTML = "";
       cartItemsContainer.classList.remove("hidden");
       emptyCartContainer.classList.add("hidden");
       if (checkoutButton) checkoutButton.style.display = "";
 
       cartItems.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "cart-item";
+        const card = template.cloneNode(true);
+        card.classList.remove("template", "hidden");
 
-        card.innerHTML = `
-          <img src="${item.thumbnail}" alt="${item.title}" class="cart-item-image">
-          <div class="cart-item-info">
-            <p class="cart-item-title">${item.title}</p>
-            <p class="cart-item-price">${parseFloat(item.price).toFixed(2)} €</p>
-          </div>
-          <button class="remove-cart-item-btn" data-title="${item.title}" aria-label="Rimuovi dal carrello">&times;</button>
-        `;
+        card.querySelector(".cart-item-image").src = item.thumbnail;
+        card.querySelector(".cart-item-image").alt = item.title;
+        card.querySelector(".cart-item-title").textContent = item.title;
+        card.querySelector(".cart-item-price").textContent = `${parseFloat(item.price).toFixed(2)} €`;
+        card.querySelector(".remove-cart-item-btn").dataset.title = item.title;
 
         cartItemsContainer.appendChild(card);
       });
     })
-    .catch(err => {
-      console.warn("Errore nel caricamento del carrello, mostro stato vuoto.");
-      cartItemsContainer.innerHTML = "";
+    .catch(() => {
       cartItemsContainer.classList.add("hidden");
       emptyCartContainer.classList.remove("hidden");
       if (checkoutButton) checkoutButton.style.display = "none";

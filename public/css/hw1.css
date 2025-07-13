@@ -2152,3 +2152,6 @@ cursor: pointer;
     width: calc((100% - 10px) / 2);
   }
 }
+.cart-item.template {
+  display: none;
+}

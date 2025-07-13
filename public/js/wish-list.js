@@ -19,8 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         if (data.ok) {
           card.remove();
+
+          // Se non ci sono più card, ricarica la pagina per far scattare @empty di Blade
           if (container.querySelectorAll('.wl-card').length === 0) {
-            container.innerHTML = "<p>Non hai più preferiti.</p>";
+            location.reload();
           }
         } else {
           alert('Errore nella rimozione: ' + (data.error || 'Errore sconosciuto'));
