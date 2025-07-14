@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('wl-favorites-container');
   const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-  container.querySelectorAll('.wl-heart').forEach(heart => {
+  const hearts = container.querySelectorAll('.wl-heart');
+  for (let heart of hearts) {
     heart.addEventListener('click', () => {
       const id = heart.dataset.id;
       const card = heart.closest('.wl-card');
@@ -30,5 +31,5 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(() => alert('Errore nella rimozione'));
     });
-  });
+  }
 });
