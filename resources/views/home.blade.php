@@ -116,6 +116,7 @@
             <button class="remove-cart-item-btn" data-title="" aria-label="Rimuovi dal carrello">&times;</button>
           </div>
         </div>
+        
         <a href="#" id="checkout-button" class="checkout-button">PAGA ORA</a>
 
         <!-- Stato carrello vuoto -->
