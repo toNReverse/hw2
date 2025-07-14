@@ -1,28 +1,28 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () { // aspetto il DOM sia completamente caricato
   const button = document.querySelector(".checkout-button");
   if (!button) return;
 
-  button.addEventListener("click", function (e) {
-    e.preventDefault();
+  button.addEventListener("click", function (evento) {
+    evento.preventDefault(); // Previene il comportamento predefinito
 
     fetch("/checkout/session", {
       method: "POST",
       headers: {
-        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),  // Token CSRF per la sicurezza altrimenti la richiesta viene rifiutata con errore 419
         "Content-Type": "application/json"
       }
     })  
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.id && data.publicKey) {
-          const stripe = Stripe(data.publicKey); // Chiave pubblica ricevuta dal controller
-          stripe.redirectToCheckout({ sessionId: data.id });  // inizializza Stripe 
-        } else {
-          console.error("Errore lato server:", data.error || "Session ID mancante");
-        }
-      })
-      .catch((error) => {
-        console.error("Errore durante il pagamento:", error);
-      });
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.id && data.publicKey) {
+        const stripe = Stripe(data.publicKey);
+        stripe.redirectToCheckout({ sessionId: data.id });
+      } else {
+        console.error("Errore lato server:", data.error || "Session ID mancante");
+      }
+    })
+    .catch((error) => {
+      console.error("Errore durante il pagamento:", error);
+    });
   });
 });
