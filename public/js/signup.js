@@ -17,26 +17,20 @@ function jsonCheckEmail(json) {
     }
 }
 
-function fetchResponse(response) {  // controllo se la risposta HTTP è ok
-    if (!response.ok) return null;
-    return response.json();
-}
+function checkEmail(event) {
+    const input = event.currentTarget;
+    const email = input.value.trim().toLowerCase();
     // Regex per validare il formato email (Trova tutte le parole o sequenze di caratteri che rispettano questo schema)
-
-
-    function checkEmail(event) {
-        const input = event.currentTarget;
-        const email = input.value.trim().toLowerCase();
-        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        
-        if (emailRegex.test(email)) {
-          formStatus.email = true;
-          input.parentNode.classList.remove('errorj');
-        } else {
-          formStatus.email = false;
-          input.parentNode.classList.add('errorj');
-        }
-      }
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    
+    if (emailRegex.test(email)) {   // verifica se rispetta il regex
+        formStatus.email = true;
+        input.parentNode.classList.remove('errorj');
+    } else {
+        formStatus.email = false;
+        input.parentNode.classList.add('errorj');
+    }
+    }
 
 function checkPassword(event) {
     const passwordInput = document.querySelector('.password input');
@@ -60,12 +54,18 @@ function checkConfirmPassword(event) {
 function checkSignup(event) {
     const checkbox = document.querySelector('.allow input');
     formStatus[checkbox.name] = checkbox.checked;
-    if (Object.keys(formStatus).length !== 6 || Object.values(formStatus).includes(false)) {
+  
+    const requiredFields = ['upload', 'name', 'email', 'password', 'confirmPassword', 'allow'];
+  
+    for (let field of requiredFields) {
+      if (!formStatus[field]) {
         event.preventDefault();
+        return; // ferma la sottomissione al primo errore trovato
+      }
     }
 }
 
-const formStatus = {'upload': true};    // per tracciare lo stato di validazione dei campi
+const formStatus = {'upload': true};    // per tracciare lo stato di validazione di ogni campo
 document.querySelector('.name input').addEventListener('blur', checkName);
 document.querySelector('.email input').addEventListener('blur', checkEmail);
 document.querySelector('.password input').addEventListener('blur', checkPassword);
