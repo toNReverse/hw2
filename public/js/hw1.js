@@ -1,15 +1,15 @@
 function chiudiAltriModaliNav(activeModalId) {
   const navModals = ['#nav-donna', '#nav-uomo', '#nav-bskteen'];
   
-  navModals.forEach(modalId => {
-      if (modalId !== activeModalId) {  // nascondo tutti i modali tranne quello passato come parametro
-          const modal = document.querySelector(modalId);
-          if (modal) {
-              modal.classList.remove('show');
-              modal.classList.add('hidden');
-          }
-      }
-  });
+  for (let modalId of navModals) {
+    if (modalId !== activeModalId) {  // nascondo tutti i modali tranne quello passato come parametro
+        const modal = document.querySelector(modalId);
+        if (modal) {
+            modal.classList.remove('show');
+            modal.classList.add('hidden');
+        }
+    }
+  }
 }
 
 function apriModale(triggerSelector, modalSelector) {
@@ -62,50 +62,53 @@ document.querySelector('.search-container').addEventListener('click', function()
 
   isSearchOpen = !isSearchOpen;
 
-  elementsToToggle.forEach(el => {
+  for (let el of elementsToToggle) {
       if (el) {
           el.style.display = isSearchOpen ? 'none' : '';
-      } 
-  });
+      }
+  }
 
   navbar.style.borderBottom = isSearchOpen ? 'none' : '1px solid black';
 
-
   searchText.textContent = isSearchOpen ? "CHIUDI" : "CERCA";
   searchIcon.src = isSearchOpen ? "./img/close-icon.png" : "./img/54481.png";
-  
+
   document.querySelector('#search-page').style.display = isSearchOpen ? 'block' : 'none';
-
-
 });
+
 /* MENU MOBILE */
 const openBtn = document.getElementById('menu-mobile');
 const closeBtn = document.getElementById('close-menu');
 const menu = document.getElementById('side-menu');
 
 openBtn.addEventListener('click', () => {
-menu.classList.add('open');
+  menu.classList.add('open');
 });
 
 closeBtn.addEventListener('click', () => {
-menu.classList.remove('open');
+  menu.classList.remove('open');
 });
 
 const tabs = document.querySelectorAll('#gender-tabs .tab');
 const contents = document.querySelectorAll('.menu-content');
 
-tabs.forEach(tab => {
-tab.addEventListener('click', function (e) {
-  e.preventDefault();
+for (let tab of tabs) {
+  tab.addEventListener('click', function (e) {
+    e.preventDefault();
 
-  tabs.forEach(t => t.classList.remove('active'));
-  this.classList.add('active');
+    for (let t of tabs) {
+      t.classList.remove('active');
+    }
+    this.classList.add('active');
 
-  const gender = this.getAttribute('data-gender');
-  contents.forEach(content => content.style.display = 'none');
-  document.getElementById('menu-' + gender).style.display = 'block';
-});
-});
+    const gender = this.getAttribute('data-gender');
+
+    for (let content of contents) {
+      content.style.display = 'none';
+    }
+    document.getElementById('menu-' + gender).style.display = 'block';
+  });
+}
 
 /* API CONVERSIONE VALUTA */
 const currencySelector = document.getElementById('currency-selector');
@@ -147,7 +150,7 @@ function updateExchangeRates(toCurrency, container = document) {
   const priceSelectors = ['.price', '.price-red', '.price-old', '.wl-price', '.cart-item-price', '.product-price'];
   const priceElements = container.querySelectorAll(priceSelectors.join(', '));
 
-  priceElements.forEach(priceElement => { // tolgo spazi prima/dopo.
+  for (const priceElement of priceElements) { // tolgo spazi prima/dopo.
     const text = priceElement.textContent.trim();
 
     let matchedSymbol = null;
@@ -161,14 +164,14 @@ function updateExchangeRates(toCurrency, container = document) {
         break;
       }
     }
-    if (!matchedSymbol) return;
+    if (!matchedSymbol) continue;
 
     const amountText = text.slice(0, -symbolLength).trim().replace(',', '.');
     const amount = parseFloat(amountText);
-    if (isNaN(amount)) return;  // skip se numero non valido
+    if (isNaN(amount)) continue;  // skip se numero non valido
 
     const fromCurrency = reverseSymbols[matchedSymbol];
-    if (fromCurrency === toCurrency) return;  // se la valuta è già quella selezionata, non faccio nulla
+    if (fromCurrency === toCurrency) continue;  // se la valuta è già quella selezionata, non faccio nulla
 
     fetch(`/convert_currency?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
       .then(response => {
@@ -184,8 +187,9 @@ function updateExchangeRates(toCurrency, container = document) {
       .catch(error => {
         console.error('Errore:', error);
       });
-  });
+  }
 }
+
 // dopo una ricerca conversione su nuovi elementi 
 let currentCurrency = 'EUR'; 
 if (currencyDropdown) {
@@ -291,36 +295,35 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.closest(".cart-btn")) toggleCart(e.target.closest(".cart-btn"));
   });
 
-  document.addEventListener("cart-item-removed", (e) => updateCartIcon(e.detail.title));
-
   // === FUNZIONI DI RICERCA ===
   function handleSearch(query) {
-    fetch(`/search?q=${encodeURIComponent(query)}`)   
+    fetch(`/search?q=${encodeURIComponent(query)}`)
       .then(res => res.json())
       .then(data => {
         resultsContainer.replaceChildren();
         hideSuggestions();
-
+  
         if (!data.shopping_results || data.shopping_results.length === 0) {
           const empty = document.createElement("p");
           empty.textContent = "Nessun risultato trovato.";
           resultsContainer.appendChild(empty);
           return;
         }
-
+  
         Promise.all([
           fetch("/load-favorites").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
-          data.shopping_results.forEach(item => {
+          for (const item of data.shopping_results) {
             const favoriteItem = favorites.find(fav => fav.title === item.title);
             const isFav = Boolean(favoriteItem);
             const isInCart = cartItems.some(cart => cart.title === item.title);
+  
             if (isFav) item.id = favoriteItem.id;
-
+  
             const card = createProductCard(item, isFav, isInCart);
             resultsContainer.appendChild(card);
-          });
+          }
         });
       })
       .catch(() => {
@@ -422,75 +425,76 @@ document.addEventListener("DOMContentLoaded", () => {
     if (topSearchTags) topSearchTags.style.display = "none";
   }
 
-  // === FUNZIONI PREFERITI ===
+  // === FUNZIONI WISHLIST ===
   function toggleFavorite(icon) {
     const card = icon.closest(".product-card");
     const item = JSON.parse(card.dataset.item);
     const isFav = icon.src.includes("filled-hearth-search-page.png");
-  
+
     if (isFav) {
       if (!item.id) {
         alert("ID mancante, impossibile rimuovere dai preferiti.");
         return;
       }
+
       removeFavorite(item.id).then(() => {
         icon.src = "img/hearth-search-page.png";
         icon.title = "Aggiungi ai preferiti";
-
         delete item.id;
         card.dataset.item = JSON.stringify(item);
-      }).catch(() => alert("Errore nella rimozione"));
+      }).catch(() => alert("Errore nella rimozione dai preferiti"));
+      
     } else {
       saveFavorite(item).then((data) => {
-        if (data.ok) {
-          icon.src = "img/filled-hearth-search-page.png";
-          icon.title = "Rimuovi dai preferiti";
+        if (!data.ok) return Promise.reject(data.error || "Errore");
 
-          if (data.id) {
-            item.id = data.id;
-            card.dataset.item = JSON.stringify(item);
-          }
-        } else {
-          alert("Errore nel salvataggio: " + (data.error || ""));
+        icon.src = "img/filled-hearth-search-page.png";
+        icon.title = "Rimuovi dai preferiti";
+
+        if (data.id) {
+          item.id = data.id;
+          card.dataset.item = JSON.stringify(item);
         }
-      }).catch(() => alert("Errore nel salvataggio"));
+      }).catch(() => alert("Errore nell'aggiunta ai preferiti"));
     }
   }
 
   function removeFavorite(id) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  
+
     return fetch("/remove-product", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken 
+        "X-CSRF-TOKEN": csrfToken
       },
       body: JSON.stringify({ id }),
+      credentials: 'same-origin'
     })
-      .then(res => res.json())
-      .then(data => {
-        if (!data.ok) return Promise.reject(data.error || "Errore");
-        return data;
-      });
+    .then(res => res.json())
+    .then(data => {
+      if (!data.ok) return Promise.reject(data.error || "Errore");
+    });
   }
-  
+
   function saveFavorite(product) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  
-    const formData = new FormData();
-    formData.append("title", product.title || "");
-    formData.append("snippet", product.snippet || "");
-    formData.append("price", product.extracted_price || "");
-    formData.append("thumbnail", product.thumbnail || "");
-  
+
     return fetch("/save-product", {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         "X-CSRF-TOKEN": csrfToken
       },
-      body: formData
-    }).then(res => res.json());
+      body: JSON.stringify({
+        title: product.title || '',
+        snippet: product.snippet || '',
+        price: product.extracted_price || '',
+        thumbnail: product.thumbnail || ''
+      }),
+      credentials: 'same-origin'
+    })
+    .then(res => res.json());
   }
 
   // === FUNZIONI CARRELLO ===
@@ -506,18 +510,21 @@ document.addEventListener("DOMContentLoaded", () => {
         img.src = "img/add-to-cart.png";
         img.title = "Aggiungi al carrello";
         loadCartItems();
+        // Icona aggiornata direttamente qui
       }).catch(() => alert("Errore nella rimozione dal carrello"));
     } else {
       addToCart({ title, thumbnail, price }).then(() => {
         img.src = "img/remove-from-cart.png";
         img.title = "Rimuovi dal carrello";
         loadCartItems();
+        // Icona aggiornata direttamente qui
       }).catch(() => alert("Errore nell'aggiunta al carrello"));
     }
   }
+
   function removeFromCart(title) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  
+
     return fetch("/remove-from-cart", {
       method: "POST",
       headers: {
@@ -530,12 +537,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
+      // Se vuoi aggiornare icona qui, va bene ma è meglio farlo in toggleCart
     });
   }
 
   function addToCart(product) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  
+
     return fetch("/add-to-cart", {
       method: "POST",
       headers: {
@@ -553,18 +561,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
+      // Anche qui aggiorna l'icona in toggleCart
     });
-  }
-  
-  function updateCartIcon(title) {
-    const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`); // evito caratteri speciali
-    if (btn) {
-      const img = btn.querySelector("img.cart-icon");
-      if (img) {
-        img.src = "img/add-to-cart.png";
-        img.title = "Aggiungi al carrello";
-      }
-    }
   }
 });
 

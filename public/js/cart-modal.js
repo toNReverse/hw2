@@ -29,7 +29,7 @@ function loadCartItems() {
       if (checkoutButton) checkoutButton.style.display = "";
 
       for (let item of cartItems) {
-        const card = template.cloneNode(true);  // Duplica un nodo del DOM per caricare ogni elemento del carrello (true per clonare anche i figli)
+        const card = template.cloneNode(true);
         card.classList.remove("template", "hidden");
 
         card.querySelector(".cart-item-image").src = item.thumbnail;
@@ -46,6 +46,23 @@ function loadCartItems() {
       emptyCartContainer.classList.remove("hidden");
       if (checkoutButton) checkoutButton.style.display = "none";
     });
+}
+
+function updateCartIcon(title) {
+  const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`);
+  if (btn) {
+    const img = btn.querySelector("img.cart-icon");
+    if (img) {
+      img.src = "img/add-to-cart.png";
+      img.title = "Aggiungi al carrello";
+    }
+  }
+}
+
+// Funzione per ricaricare carrello e aggiornare icona ricerca
+function refreshCartAndIcon(title) {
+  loadCartItems();
+  updateCartIcon(title);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -69,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(res => res.json())
         .then(data => {
           if (data.ok) {
-            loadCartItems(); // Ricarica carrello
+            refreshCartAndIcon(title);
           } else {
             alert("Errore nella rimozione dal carrello");
           }
