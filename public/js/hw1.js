@@ -569,9 +569,5 @@ document.addEventListener("DOMContentLoaded", () => {
 /*
 come funziona cart-modal
 dove carica gli elementi del carrello
-utilizzare al meglio i models per ogni funzione
 definire meglio cosa è asincrono e cosa no
-
-
-
 */

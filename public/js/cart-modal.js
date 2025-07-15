@@ -19,14 +19,14 @@ function loadCartItems() {
       if (!cartItems || cartItems.length === 0) {
         cartItemsContainer.classList.add("hidden");
         emptyCartContainer.classList.remove("hidden");
-        if (checkoutButton) checkoutButton.style.display = "none";
+        if (checkoutButton) checkoutButton.style.display = "none";  // Se il carrello è vuoto, nascondo il bottone
         return;
       }
 
       // Mostra contenuti carrello
       cartItemsContainer.classList.remove("hidden");
       emptyCartContainer.classList.add("hidden");
-      if (checkoutButton) checkoutButton.style.display = "";
+      if (checkoutButton) checkoutButton.style.display = "";  // Se il carrello non è vuoto, mostro il bottone
 
       for (let item of cartItems) {
         const card = template.cloneNode(true);
@@ -48,8 +48,9 @@ function loadCartItems() {
     });
 }
 
+// Cerca il bottone carrello con quel titolo e lo riporta allo stato “Aggiungi”
 function updateCartIcon(title) {
-  const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`);
+  const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`); // css.escape permette di gestire titoli con caratteri speciali
   if (btn) {
     const img = btn.querySelector("img.cart-icon");
     if (img) {
