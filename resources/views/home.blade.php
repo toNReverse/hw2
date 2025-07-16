@@ -113,7 +113,7 @@
               <p class="cart-item-title"></p>
               <p class="cart-item-price"></p>
             </div>
-            <button class="remove-cart-item-btn" data-title="" aria-label="Rimuovi dal carrello">&times;</button>
+            <button class="remove-cart-item-btn" data-title="" aria-label="Rimuovi dal carrello">&times;</button>            
           </div>
         </div>
         

@@ -12,10 +12,10 @@ document.addEventListener("DOMContentLoaded", function () { // aspetto il DOM si
         "Content-Type": "application/json"
       }
     })  
-    .then((response) => response.json())
+    .then((response) => response.json())  // Gestisce la risposta JSON
     .then((data) => {
-      if (data.id && data.publicKey) {
-        const stripe = Stripe(data.publicKey);
+      if (data.id && data.publicKey) { 
+        const stripe = Stripe(data.publicKey);  // Inizializza Stripe
         stripe.redirectToCheckout({ sessionId: data.id });
       } else {
         console.error("Errore lato server:", data.error || "Session ID mancante");
