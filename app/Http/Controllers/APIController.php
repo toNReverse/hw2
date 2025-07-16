@@ -97,13 +97,14 @@ class ApiController extends BaseController
         $lineItems = [];
     
         foreach ($cartItems as $item) {
+            $price = floatval($item->price);     // forza conversione a float (0 se non convertibile)
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'eur',
                     'product_data' => [
                         'name' => $item->title,
                     ],
-                    'unit_amount' => intval($item->price * 100),
+                    'unit_amount' => intval($price * 100),
                 ],
                 'quantity' => 1
             ];

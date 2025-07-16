@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function () { // aspetto il DOM si
     fetch("/checkout/session", {
       method: "POST",
       headers: {
-        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),  // Token CSRF per la sicurezza altrimenti la richiesta viene rifiutata con errore 419
+        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
         "Content-Type": "application/json"
       }
     })  
-    .then((response) => response.json())  // Gestisce la risposta JSON
+    .then((response) => response.json())
     .then((data) => {
       if (data.id && data.publicKey) { 
         const stripe = Stripe(data.publicKey);  // Inizializza Stripe
