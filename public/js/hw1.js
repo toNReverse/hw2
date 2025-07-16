@@ -320,83 +320,56 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
-    const card = document.createElement("div");
-    card.className = "product-card p-c-search";
+    const template = document.querySelector(".product-card.template"); 
+    const card = template.cloneNode(true);  // clono il template del prodotto
+    card.classList.remove("template", "hidden");
     card.dataset.item = JSON.stringify(item);
   
-    const img = document.createElement("img");
-    img.className = "product-image";
+    const img = card.querySelector(".product-image");
     img.src = item.thumbnail;
     img.alt = item.title;
   
-    const productInfo = document.createElement("div");
-    productInfo.className = "product-info";
-  
-    const leftInfo = document.createElement("div");
-    leftInfo.className = "left-info";
-  
-    const name = document.createElement("p");
-    name.className = "product-name";
+    const name = card.querySelector(".product-name");
     name.textContent = item.title;
   
-    const priceLine = document.createElement("div");
-    priceLine.className = "price-line";
+    const price = card.querySelector(".product-price");
+    price.textContent = item.extracted_price ? item.extracted_price.toFixed(2) + " €" : "";
   
-    const price = document.createElement("span");
-    price.className = "product-price";
-    if (item.extracted_price) price.textContent = item.extracted_price.toFixed(2) + " €";
-    priceLine.appendChild(price);
-  
+    const discount = card.querySelector(".discount");
     if (item.discount) {
-      const discount = document.createElement("span");
-      discount.className = "discount";
       discount.textContent = item.discount;
-      priceLine.appendChild(discount);
+      discount.style.display = "";
+    } else {
+      discount.style.display = "none";
     }
   
-    leftInfo.appendChild(name);
-    leftInfo.appendChild(priceLine);
-  
+    const oldPrice = card.querySelector(".price-old");
     if (item.previous_price) {
-      const oldPrice = document.createElement("p");
-      oldPrice.className = "price-old";
       oldPrice.textContent = item.previous_price.toFixed(2) + " €";
-      leftInfo.appendChild(oldPrice);
+      oldPrice.style.display = "";
+    } else {
+      oldPrice.style.display = "none";
     }
   
-    const rightIcon = document.createElement("div");
-    rightIcon.className = "right-icon";
-  
-    const favIcon = document.createElement("img");
-    favIcon.className = "fav-icon";
+    const favIcon = card.querySelector(".fav-icon");
     favIcon.src = isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png';
     favIcon.alt = "cuoricino";
     favIcon.title = isFav ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti";
-    favIcon.dataset.id = item.id || ''; 
+    favIcon.dataset.id = item.id || '';
   
-    const cartBtn = document.createElement("a");
-    cartBtn.className = "cart-btn";
+    const cartBtn = card.querySelector(".cart-btn");
     cartBtn.dataset.title = item.title;
     cartBtn.dataset.thumbnail = item.thumbnail;
     cartBtn.dataset.price = item.extracted_price || 0;
-    cartBtn.dataset.id = item.id || ""; // <-- questa riga risolve il problema
+    cartBtn.dataset.id = item.id || "";
   
-    const cartIcon = document.createElement("img");
-    cartIcon.className = "cart-icon";
+    const cartIcon = cartBtn.querySelector(".cart-icon");
     cartIcon.src = isInCart ? 'img/remove-from-cart.png' : 'img/add-to-cart.png';
     cartIcon.alt = "carrello";
     cartIcon.title = isInCart ? "Rimuovi dal carrello" : "Aggiungi al carrello";
   
-    cartBtn.appendChild(cartIcon);
-    rightIcon.appendChild(favIcon);
-    rightIcon.appendChild(cartBtn);
+    updateExchangeRates(toCurrency, card);
   
-    productInfo.appendChild(leftInfo);
-    productInfo.appendChild(rightIcon);
-    card.appendChild(img);
-    card.appendChild(productInfo);
-  
-    updateExchangeRates(toCurrency, card);  
     return card;
   }
 
@@ -535,7 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
-      loadCartItems();  // Aggiorna qui dopo rimozione
+      loadCartItems(); 
       return data;
     });
   }
@@ -560,7 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
-      loadCartItems();  // Aggiorna qui dopo aggiunta
+      loadCartItems();
       return data;
     });
   }

@@ -270,6 +270,25 @@
     <input type="text" placeholder="CERCA" class="search-input-page">
   </div>
 
+  <div class="product-card template hidden">
+    <img class="product-image" />
+    <div class="product-info">
+      <div class="left-info">
+        <p class="product-name"></p>
+        <div class="price-line">
+          <span class="product-price"></span>
+          <span class="discount" style="display: none;"></span>
+        </div>
+        <p class="price-old" style="display: none;"></p>
+      </div>
+      <div class="right-icon">
+        <img class="fav-icon" />
+        <a class="cart-btn">
+          <img class="cart-icon" />
+        </a>
+      </div>
+    </div>
+  </div>
   <!-- Risultati dinamici della ricerca -->
   <div id="results" class="search-results product-container"></div>
 
