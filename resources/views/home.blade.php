@@ -440,9 +440,7 @@
         <p class="product-name"></p>
         <div class="price-line">
           <span class="product-price"></span>
-          <span class="discount"></span>
         </div>
-        <p class="price-old"></p>
       </div>
       <div class="right-icon">
         <img class="fav-icon" />

@@ -166,8 +166,7 @@ function updateExchangeRates(toCurrency, container = document) {
 
     const amountText = text.slice(0, -symbolLength).trim().replace(',', '.'); // rimuovo il simbolo
     const amount = parseFloat(amountText);
-    if (isNaN(amount)) continue;  // skip se numero non valido
-
+    if (amount !== amount) continue;
     const fromCurrency = reverseSymbols[matchedSymbol];
     if (fromCurrency === toCurrency) continue;  // se la valuta è già quella selezionata, non faccio nulla
 
@@ -301,8 +300,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const isFav = Boolean(favoriteItem);
             const isInCart = Boolean(cartItem);
           
-            if (isFav) item.id = favoriteItem.id;
-            else if (isInCart) item.id = cartItem.id;
+            if (isFav) item.favId = favoriteItem.id;
+            if (isInCart) item.cartId = cartItem.id;
           
             const card = createProductCard(item, isFav, isInCart);
             resultsContainer.appendChild(card);
@@ -322,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const template = document.querySelector(".product-card.template"); 
     const card = template.cloneNode(true);  
     card.classList.remove("template", "hidden");
-    card.dataset.item = JSON.stringify(item);
+    card.dataset.item = JSON.stringify(item); // salvo l'oggetto prodotto nel dataset 
   
     const img = card.querySelector(".product-image");
     img.src = item.thumbnail;
@@ -333,22 +332,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const price = card.querySelector(".product-price");
     price.textContent = item.extracted_price ? item.extracted_price.toFixed(2) + " €" : "";
-  
-    const discount = card.querySelector(".discount");
-    if (item.discount) {
-      discount.textContent = item.discount;
-      discount.classList.remove("hidden");
-    } else {
-      discount.classList.add("hidden");
-    }
-  
-    const oldPrice = card.querySelector(".price-old");
-    if (item.previous_price) {
-      oldPrice.textContent = item.previous_price.toFixed(2) + " €";
-      oldPrice.classList.remove("hidden");
-    } else {
-      oldPrice.classList.add("hidden");
-    }
   
     const favIcon = card.querySelector(".fav-icon");
     favIcon.src = isFav ? 'img/filled-hearth-search-page.png' : 'img/hearth-search-page.png';
@@ -392,15 +375,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const isFav = icon.src.includes("filled-hearth-search-page.png");
 
     if (isFav) {
-      if (!item.id) {
+      if (!item.favId) {
         alert("ID mancante, impossibile rimuovere dai preferiti.");
         return;
       }
       
-      removeFavorite(item.id).then(() => {  
+      removeFavorite(item.favId).then(() => {
         icon.src = "img/hearth-search-page.png";
         icon.title = "Aggiungi ai preferiti";
-        delete item.id;
+        delete item.favId;
         card.dataset.item = JSON.stringify(item);
       }).catch(() => alert("Errore nella rimozione dai preferiti"));
       
@@ -413,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (data.id) {
           // salvo l'id restituito dal DB, così da poter rimuovere senza doverlo ricaricare
-          item.id = data.id;
+          item.favId = data.id;
           card.dataset.item = JSON.stringify(item);
         }
       }).catch(() => alert("Errore nell'aggiunta ai preferiti"));
@@ -466,15 +449,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const isInCart = img.src.includes("remove-from-cart.png");  // verifica se l'icona è quella del carrello pieno
   
     if (isInCart) { 
-      if (!item.id) {
+      if (!item.cartId) {
         alert("ID mancante, impossibile rimuovere dal carrello.");
         return;
       }
   
-      removeFromCart(item.id).then(() => {
+      removeFromCart(item.cartId).then(() => {
         img.src = "img/add-to-cart.png";
         img.title = "Aggiungi al carrello";
-        delete item.id;
+        delete item.cartId;
         card.dataset.item = JSON.stringify(item);
       }).catch(() => alert("Errore nella rimozione dal carrello"));
   
@@ -486,7 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
         img.title = "Rimuovi dal carrello";
   
         if (data.id) {
-          item.id = data.id;
+          item.cartId = data.id;
           card.dataset.item = JSON.stringify(item);
         }
       }).catch(() => alert("Errore nell'aggiunta al carrello"));

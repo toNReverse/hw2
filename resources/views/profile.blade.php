@@ -277,14 +277,12 @@
       <p class="product-name"></p>
       <div class="price-line">
         <span class="product-price"></span>
-        <span class="discount" style="display: none;"></span>
       </div>
-      <p class="price-old" style="display: none;"></p>
     </div>
     <div class="right-icon">
-      <img class="fav-icon" />
+      <img class="fav-icon"/>
       <a class="cart-btn">
-        <img class="cart-icon" />
+        <img class="cart-icon"/>
       </a>
     </div>
   </div>
