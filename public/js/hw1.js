@@ -1,6 +1,5 @@
 function chiudiAltriModaliNav(activeModalId) {
   const navModals = ['#nav-donna', '#nav-uomo', '#nav-bskteen'];
-  
   for (let modalId of navModals) {
     if (modalId !== activeModalId) {  // nascondo tutti i modali tranne quello passato come parametro
         const modal = document.querySelector(modalId);
@@ -121,6 +120,12 @@ const symbols = {
   CHF: 'CHF'
 };
 
+// imposto la valuta corrente
+let currentCurrency = 'EUR'; 
+if (currencyDropdown) {
+  currentCurrency = currencyDropdown.value;
+}
+
 // creo un oggetto per la conversione inversa (es. da € a EUR)
 const reverseSymbols = {};
 for (const code in symbols) {
@@ -134,7 +139,7 @@ if (currencySelector && menuValuta) {
 }
 
 if (currencyDropdown && menuValuta) {
-  currencyDropdown.addEventListener('change', () => {
+  currencyDropdown.addEventListener('change', () => { 
     const selectedCurrency = currencyDropdown.value;
     currentCurrency = selectedCurrency;   //	aggiorno la variabile currentCurrency.
     console.log('Valuta selezionata:', selectedCurrency);
@@ -187,64 +192,63 @@ function updateExchangeRates(toCurrency, container = document) {
   }
 }
 
-// imposto la valuta corrente
-let currentCurrency = 'EUR'; 
-if (currencyDropdown) {
-  currentCurrency = currencyDropdown.value;
-}
-
-// TRADUZIONE
-const selector = document.getElementById('language-selector');
-const menuTraslate = document.getElementById('language-menu');
-const languageSelect = document.getElementById('language');
+// API TRADUZIONE
+const languageSelectorButton = document.getElementById('language-selector');
+const languageMenu = document.getElementById('language-menu');
+const languageDropdown = document.getElementById('language');
 const translationCache = {};
 
-if (selector && menuTraslate) {
-  selector.addEventListener('click', () => menuTraslate.classList.toggle('hidden'));
+if (languageSelectorButton && languageMenu) {
+  languageSelectorButton.addEventListener('click', () => {
+    languageMenu.classList.toggle('hidden');
+  });
 }
 
-if (languageSelect) {
-  languageSelect.addEventListener('change', () => {
-    const lang = languageSelect.value;
-    const elements = document.querySelectorAll(
+if (languageDropdown) {
+  languageDropdown.addEventListener('change', () => {
+    const selectedLanguage = languageDropdown.value;
+
+    // Seleziona gli elementi da tradurre
+    const elementsToTranslate = document.querySelectorAll(
       '#linksLEFT a, #gender-tabs a, .menu-content li, #linksRIGHT a, #search-text, .box-text h1, .product-text, .text_wrapper a, .gtl-text-container p, .cta-button, .suggested-text h2, .suggested-product h3, .spam-conto h2, .spam-conto p, .spam-conto a, .footer-container h3, .footer-container #traslate, .footer-container .small-text, .footer-container a, .modal-title, #facebook-access, .privacy-text, .login-options .traslate, .login-submit .traslate, .signup-link, .cart-header h2, .favorites-btn .traslate, .cart-empty-content h3, .cart-empty-content p, .cart-empty-content .discover-btn, .nav-menu a, .top-search-tag .traslate, .top-search-suggest h3, .product-name, .search-input-page'
     );
 
-    let i = 0;
+    let currentIndex = 0;
 
-    function next() {
-      if (i >= elements.length) {
-        menuTraslate?.classList.add('hidden');
+    // Funzione ricorsiva per tradurre un elemento alla volta
+    function translateNextElement() {
+      if (currentIndex >= elementsToTranslate.length) {
+        languageMenu?.classList.add('hidden');
         return;
       }
 
-      const el = elements[i++];
-      const original = el.textContent.trim();
-      if (!original) return next();
+      const element = elementsToTranslate[currentIndex++];
+      const originalText = element.textContent.trim();
+      if (!originalText) return translateNextElement();
 
-      // Se siamo in italiano, semplicemente non traduciamo
-      if (lang === 'it') return next();
+      // Se la lingua è italiano non tradurre
+      if (selectedLanguage === 'it') return translateNextElement();
 
-      // Se è già in cache, usala
-      if (translationCache[original]) {
-        el.textContent = translationCache[original];
-        return next();
+      // Se la traduzione è già in cache, usala
+      if (translationCache[originalText]) {
+        element.textContent = translationCache[originalText];
+        return translateNextElement();
       }
-
-      // Altrimenti, fai la fetch
-      fetch(`/translate?text=${encodeURIComponent(original)}&to=${lang}`)
-        .then(res => res.json())
+      fetch(`/translate?text=${encodeURIComponent(originalText)}&to=${selectedLanguage}`)
+        .then(response => response.json())
         .then(data => {
           if (data.translatedText) {
-            el.textContent = data.translatedText;
-            translationCache[original] = data.translatedText;
+            element.textContent = data.translatedText;
+            translationCache[originalText] = data.translatedText;
           }
-          next();
+          translateNextElement();
         })
-        .catch(() => next());
+        .catch(() => {
+          // Se errore, continua con il prossimo
+          translateNextElement();
+        });
     }
-
-    next();
+    translateNextElement();
   });
 }
 

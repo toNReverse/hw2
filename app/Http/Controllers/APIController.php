@@ -62,9 +62,9 @@ class ApiController extends BaseController
             return response()->json(['error' => 'Errore nella richiesta API'], 500);
         }
     
-        $data = json_decode($response, true);
+        $data = json_decode($response, true);   // decodifica la risposta JSON
     
-        if (!isset($data['conversion_rates'][$to])) {
+        if (!isset($data['conversion_rates'][$to])) {  
             return response()->json(['error' => 'Valuta non supportata'], 400);
         }
     
