@@ -1,6 +1,5 @@
 <?php
 
-// SearchController.php
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -10,14 +9,14 @@ class SearchController extends BaseController
 {
     public function search(Request $request)
     {
-        $api_key = 'e3a3168197aff840ead92196f9a83b60f7bed2bb448b209a7ec169e5f8456887';
+        $api_key = env('SERPAPI_KEY');
+
         $query = $request->query('q'); 
 
         if (empty($query)) {
             return response()->json(['error' => 'Query mancante']);
         }
 
-        // interrogo l'API di SerpApi per Google Shopping
         $url = 'https://serpapi.com/search?' . http_build_query([
             'engine' => 'google_shopping',
             'q' => $query,
@@ -27,11 +26,9 @@ class SearchController extends BaseController
         ]);
 
         $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);    // Imposta l’URL di destinazione della richiesta.
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // resistuisce il risultato come stringa.
-
-        $response = curl_exec($ch); // esegue la richiesta e assegna la risposta
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
         
         if (curl_errno($ch)) {
             return response()->json(['error' => curl_error($ch)]);
@@ -44,8 +41,6 @@ class SearchController extends BaseController
             return response()->json(['error' => "Errore HTTP: $http_code"]);
         }
 
-        return response($response)->header('Content-Type', 'application/json'); // Restituisce la risposta JSON
+        return response($response)->header('Content-Type', 'application/json');
     }
-    
-
 }

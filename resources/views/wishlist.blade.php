@@ -92,139 +92,139 @@
 
         <a>Carrello</a>
       </div>
-    </nav>
+</nav>
     
-    <!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
-    <div id="cart-modal" class="modal hidden">
-      <div class="model">
-        <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
+<!-- SIDE PAGE (ACCEDI, CARRELLO) **RIMOSSA**-->
+<div id="cart-modal" class="modal hidden">
+  <div class="model">
+    <button class="close-btn-cart" aria-label="Chiudi carrello">&times;</button>
 
-        <div class="cart-header">
-          <h2>Carrello</h2>
-          <div class="cart-actions">
-            <a href="{{ url('wishlist') }}" class="favorites-btn">
-              <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
-              <span class="traslate">Preferiti</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Contenitore prodotti -->
-        <div class="cart-items hidden" id="cart-items-container">
-          <div class="cart-item template hidden">
-            <img src="" alt="" class="cart-item-image">
-            <div class="cart-item-info">
-              <p class="cart-item-title"></p>
-              <p class="cart-item-price"></p>
-            </div>
-            <button class="remove-cart-item-btn" data-title="" aria-label="Rimuovi dal carrello">&times;</button>
-          </div>
-        </div>
-        
-        <a href="#" id="checkout-button" class="checkout-button">PAGA ORA</a>
-
-        <!-- Stato carrello vuoto -->
-        <div class="cart-empty-content" id="cart-empty-content">
-          <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
-          <h3>Carrello vuoto</h3>
-          <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
-          <a href="{{ url('wishlist') }}" class="discover-btn">VAI AI PREFERITI</a>
-        </div>
+    <div class="cart-header">
+      <h2>Carrello</h2>
+      <div class="cart-actions">
+        <a href="{{ url('wishlist') }}" class="favorites-btn">
+          <span class="icon"><img src="./img/heart-icon.png" alt="cuoricino"></span> 
+          <span class="traslate">Preferiti</span>
+        </a>
       </div>
     </div>
 
-  <div id="nav-donna" class="modal-nav hidden">  
-    <div class="nav-content">
-      <ul class="nav-menu">
-        <li><a href="#">Combo wins % <span id = "off-txt">Fino al 10% di sconto</span></li></a>
-        <li><a href="#">Novità</a></li>
-        <li><a href="#">Abbigliamento <span class="arrow">→</span></a></li>
-        <li><a href="#">Scarpe<span class="arrow">→</span></a></li>
-        <li><a href="#">Accessori<span class="arrow">→</span></a></li>
-        <li><a href="#">Out of core</a></li>
-        <li><a href="#">Personalizzazione <span class="emoji">🎨</span></a></li>
-        <li><a href="#">The BERSHKA Print Shop</a></li>
-        <li><a href="#">Get the look<span id = "off-txt">#BERSHKASTYLE</span></li></a>
-        <li><a href="#" class="special-link">Special prices <span class="badge badge-pink">New Items</span></a></li>
-      </ul>
-      <div class="get-the-look-nav">
-        <h3>GET THE LOOK</h3>
-        <div class="look-grid">
-          <div class="look-item">
-            <img src="./img/1donna-gtl-nav.webp" alt="Streetwear" />
-            <p>Streetwear</p>
-          </div>
-          <div class="look-item">
-            <img src="./img/2donna-gtl-nav.webp" alt="Casual" />
-            <p>Casual</p>
-          </div>
-          <div class="look-item">
-            <img src="./img/3donna-gtl-nav.webp" alt="Basic" />
-            <p>Basic</p>
-          </div>
-          <div class="look-item">
-            <img src="./img/4donna-gtl-nav.webp" alt="Trendy" />
-            <p>Trendy</p>
-          </div>
+    <!-- Contenitore prodotti -->
+    <div class="cart-items hidden" id="cart-items-container">
+      <div class="cart-item template hidden">
+        <img src="" alt="" class="cart-item-image">
+        <div class="cart-item-info">
+          <p class="cart-item-title"></p>
+          <p class="cart-item-price"></p>
+        </div>
+        <button class="remove-cart-item-btn" data-title="" aria-label="Rimuovi dal carrello">&times;</button>
+      </div>
+    </div>
+    
+    <a href="#" id="checkout-button" class="checkout-button">PAGA ORA</a>
+
+    <!-- Stato carrello vuoto -->
+    <div class="cart-empty-content" id="cart-empty-content">
+      <img src="img/nobg.png" alt="Cuore spezzato" class="broken-heart" />
+      <h3>Carrello vuoto</h3>
+      <p>Non hai ancora nessun articolo nel carrello: scopri tutto quello che abbiamo in serbo per te</p>
+      <a href="{{ url('wishlist') }}" class="discover-btn">VAI AI PREFERITI</a>
+    </div>
+  </div>
+</div>
+
+<div id="nav-donna" class="modal-nav hidden">  
+  <div class="nav-content">
+    <ul class="nav-menu">
+      <li><a href="#">Combo wins % <span id = "off-txt">Fino al 10% di sconto</span></li></a>
+      <li><a href="#">Novità</a></li>
+      <li><a href="#">Abbigliamento <span class="arrow">→</span></a></li>
+      <li><a href="#">Scarpe<span class="arrow">→</span></a></li>
+      <li><a href="#">Accessori<span class="arrow">→</span></a></li>
+      <li><a href="#">Out of core</a></li>
+      <li><a href="#">Personalizzazione <span class="emoji">🎨</span></a></li>
+      <li><a href="#">The BERSHKA Print Shop</a></li>
+      <li><a href="#">Get the look<span id = "off-txt">#BERSHKASTYLE</span></li></a>
+      <li><a href="#" class="special-link">Special prices <span class="badge badge-pink">New Items</span></a></li>
+    </ul>
+    <div class="get-the-look-nav">
+      <h3>GET THE LOOK</h3>
+      <div class="look-grid">
+        <div class="look-item">
+          <img src="./img/1donna-gtl-nav.webp" alt="Streetwear" />
+          <p>Streetwear</p>
+        </div>
+        <div class="look-item">
+          <img src="./img/2donna-gtl-nav.webp" alt="Casual" />
+          <p>Casual</p>
+        </div>
+        <div class="look-item">
+          <img src="./img/3donna-gtl-nav.webp" alt="Basic" />
+          <p>Basic</p>
+        </div>
+        <div class="look-item">
+          <img src="./img/4donna-gtl-nav.webp" alt="Trendy" />
+          <p>Trendy</p>
         </div>
       </div>
     </div>
   </div>
-  <div id="nav-uomo" class="modal-nav hidden">  
-    <div class="nav-content">
-      <ul class="nav-menu">
-        <li><a href="#">Combo wins % <span id = "off-txt">Fino al 10% di sconto</span></li></a>
-        <li><a href="#">Novità</a></li>
-        <li><a href="#">Abbigliamento <span class="arrow">→</span></a></li>
-        <li><a href="#">Scarpe<span class="arrow">→</span></a></li>
-        <li><a href="#">Accessori<span class="arrow">→</span></a></li>
-        <li><a href="#">Out of core</a></li>
-        <li><a href="#">Personalizzazione <span class="emoji">🎨</span></a></li>
-        <li><a href="#">The BERSHKA Print Shop</a></li>
-        <li><a href="#">Get the look<span id = "off-txt">#BERSHKASTYLE</span></li></a>
-        <li><a href="#" class="special-link">Special prices <span class="badge badge-pink">New Items</span></a></li>
-      </ul>
-      <div class="get-the-look-nav">
-        <h3>GET THE LOOK</h3>
-        <div class="look-grid">
-          <div class="look-item">
-            <img src="./img/1uomo-gtl-nav.webp" alt="Streetwear" />
-            <p>Streetwear</p>
-          </div>
-          <div class="look-item">
-            <img src="./img/2uomo-gtl-nav.webp" alt="Casual" />
-            <p>Casual</p>
-          </div>
-          <div class="look-item">
-            <img src="./img/3uomo-gtl-nav.webp" alt="Basic" />
-            <p>Basic</p>
-          </div>
-          <div class="look-item">
-            <img src="./img/4uomo-gtl-nav.webp" alt="Trendy" />
-            <p>Trendy</p>
-          </div>
+</div>
+<div id="nav-uomo" class="modal-nav hidden">  
+  <div class="nav-content">
+    <ul class="nav-menu">
+      <li><a href="#">Combo wins % <span id = "off-txt">Fino al 10% di sconto</span></li></a>
+      <li><a href="#">Novità</a></li>
+      <li><a href="#">Abbigliamento <span class="arrow">→</span></a></li>
+      <li><a href="#">Scarpe<span class="arrow">→</span></a></li>
+      <li><a href="#">Accessori<span class="arrow">→</span></a></li>
+      <li><a href="#">Out of core</a></li>
+      <li><a href="#">Personalizzazione <span class="emoji">🎨</span></a></li>
+      <li><a href="#">The BERSHKA Print Shop</a></li>
+      <li><a href="#">Get the look<span id = "off-txt">#BERSHKASTYLE</span></li></a>
+      <li><a href="#" class="special-link">Special prices <span class="badge badge-pink">New Items</span></a></li>
+    </ul>
+    <div class="get-the-look-nav">
+      <h3>GET THE LOOK</h3>
+      <div class="look-grid">
+        <div class="look-item">
+          <img src="./img/1uomo-gtl-nav.webp" alt="Streetwear" />
+          <p>Streetwear</p>
+        </div>
+        <div class="look-item">
+          <img src="./img/2uomo-gtl-nav.webp" alt="Casual" />
+          <p>Casual</p>
+        </div>
+        <div class="look-item">
+          <img src="./img/3uomo-gtl-nav.webp" alt="Basic" />
+          <p>Basic</p>
+        </div>
+        <div class="look-item">
+          <img src="./img/4uomo-gtl-nav.webp" alt="Trendy" />
+          <p>Trendy</p>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<div id="nav-bskteen" class="modal-nav hidden"> 
+  <div class="nav-content">
+    <ul class="nav-menu">
+      <li><a href="#">HELLO KITTY <span class="badge badge-blue">NEW</span></a></li>
+      <li><a href="#">NOVITÀ</a></li>
+      <li><a href="#">ABBIGLIAMENTO <span class="arrow">→</span></a></li>
+      <li><a href="#">SCARPE</a></li>
+      <li><a href="#">ACCESSORI</a></li>
+      <li><a href="#">OUT OF CORE</a></li>
+      <li><a href="#">PERSONALIZZAZIONE <span class="emoji">🎨</span></a></li>
+      <li><a href="#">THE BERSHKA PRINT SHOP</a></li>
+      <li><a href="#" class="special-link">SPECIAL PRICES <span class="badge badge-pink">NEW ITEMS</span></a></li>
+    </ul>
+  </div>
+</div>
   
-  <div id="nav-bskteen" class="modal-nav hidden"> 
-    <div class="nav-content">
-      <ul class="nav-menu">
-        <li><a href="#">HELLO KITTY <span class="badge badge-blue">NEW</span></a></li>
-        <li><a href="#">NOVITÀ</a></li>
-        <li><a href="#">ABBIGLIAMENTO <span class="arrow">→</span></a></li>
-        <li><a href="#">SCARPE</a></li>
-        <li><a href="#">ACCESSORI</a></li>
-        <li><a href="#">OUT OF CORE</a></li>
-        <li><a href="#">PERSONALIZZAZIONE <span class="emoji">🎨</span></a></li>
-        <li><a href="#">THE BERSHKA PRINT SHOP</a></li>
-        <li><a href="#" class="special-link">SPECIAL PRICES <span class="badge badge-pink">NEW ITEMS</span></a></li>
-      </ul>
-    </div>
-  </div>
-  
-  <section>
+<section>
   <div class="wl-container">
     <h1>Preferiti</h1>
     <div class="wl-grid" id="wl-favorites-container">

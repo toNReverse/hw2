@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({ id })
       })
-      .then(res => res.json())
+      .then(res => res.json())  // converto la risposta del server in JSON.
       .then(data => {
         if (data.ok) {
           card.remove();
 
-          // Se non ci sono più card, ricarica la pagina per far scattare @empty di Blade
+          // se non ci sono più card, ricarica la pagina per far scattare @empty di Blade
           if (container.querySelectorAll('.wl-card').length === 0) {
             location.reload();
           }

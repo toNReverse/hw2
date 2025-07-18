@@ -36,7 +36,7 @@ class CartController extends BaseController
             return response()->json(['ok' => false, 'error' => 'Dati mancanti']);
         }
 
-        $existing = Cart::where('user_id', $userId)->where('title', $title)->first();
+        $existing = Cart::where('user_id', $userId)->where('title', $title)->first();  //recupera solo il primo record 
         if ($existing) {
             return response()->json(['ok' => false, 'error' => 'Prodotto già nel carrello']);
         }
@@ -72,11 +72,5 @@ class CartController extends BaseController
         } else {
             return response()->json(['ok' => false, 'error' => 'Impossibile rimuovere il prodotto']);
         }
-    }
-
-    // Metodo ridondante: fetchCart e loadCart fanno la stessa cosa
-    public function loadCart(Request $request)
-    {
-        return $this->fetchCart($request);
     }
 }

@@ -105,6 +105,7 @@ tabs.forEach(tab => {
   });
 });
 
+
 /* API CONVERSIONE VALUTA */
 const currencySelector = document.getElementById('currency-selector');
 const menuValuta = document.getElementById('currency-menu');
@@ -211,31 +212,28 @@ if (languageSelect) {
     );
 
     let i = 0;
+
     function next() {
       if (i >= elements.length) {
         menuTraslate?.classList.add('hidden');
         return;
       }
 
-      // prendo il prossimo elemento da tradurre
       const el = elements[i++];
       const original = el.textContent.trim();
       if (!original) return next();
 
-      // se l'elemento ha già un dataset originale, lo uso per non tradurre di nuovo
-      if (!el.dataset.original) el.dataset.original = original;
-      if (lang === 'it') {
-        el.textContent = el.dataset.original;
-        return next();
-      }
+      // Se siamo in italiano, semplicemente non traduciamo
+      if (lang === 'it') return next();
 
-      // se l'elemento è già tradotto, uso la cache
+      // Se è già in cache, usala
       if (translationCache[original]) {
         el.textContent = translationCache[original];
         return next();
       }
 
-      fetch(`/translate?text=${encodeURIComponent(original)}&to=${lang}`) 
+      // Altrimenti, fai la fetch
+      fetch(`/translate?text=${encodeURIComponent(original)}&to=${lang}`)
         .then(res => res.json())
         .then(data => {
           if (data.translatedText) {
@@ -244,12 +242,13 @@ if (languageSelect) {
           }
           next();
         })
-        .catch(() => next()); 
+        .catch(() => next());
     }
 
     next();
   });
 }
+
 /* SEARCH PAGE */
 document.addEventListener("DOMContentLoaded", () => {
   const input = document.querySelector(".search-input-page") || document.getElementById("search-input-products");
@@ -281,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`/search?q=${encodeURIComponent(query)}`)
       .then(res => res.json())
       .then(data => {
-        resultsContainer.replaceChildren();
+        resultsContainer.replaceChildren();   // svuoto i risultati precedenti 
         hideSuggestions();
   
         if (!data.shopping_results || data.shopping_results.length === 0) {
@@ -290,8 +289,8 @@ document.addEventListener("DOMContentLoaded", () => {
           resultsContainer.appendChild(empty);
           return;
         }
-  
-        Promise.all([  
+        
+        Promise.all([ // carico preferiti e carrello
           fetch("/load-favorites").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
@@ -321,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function createProductCard(item, isFav, isInCart, toCurrency = 'EUR') {
     const template = document.querySelector(".product-card.template"); 
-    const card = template.cloneNode(true);  // clono il template del prodotto
+    const card = template.cloneNode(true);  
     card.classList.remove("template", "hidden");
     card.dataset.item = JSON.stringify(item);
   
@@ -338,17 +337,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const discount = card.querySelector(".discount");
     if (item.discount) {
       discount.textContent = item.discount;
-      discount.style.display = "";
+      discount.classList.remove("hidden");
     } else {
-      discount.style.display = "none";
+      discount.classList.add("hidden");
     }
   
     const oldPrice = card.querySelector(".price-old");
     if (item.previous_price) {
       oldPrice.textContent = item.previous_price.toFixed(2) + " €";
-      oldPrice.style.display = "";
+      oldPrice.classList.remove("hidden");
     } else {
-      oldPrice.style.display = "none";
+      oldPrice.classList.add("hidden");
     }
   
     const favIcon = card.querySelector(".fav-icon");
@@ -375,15 +374,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showSuggestions() {
     resultsContainer.replaceChildren();
-    if (suggestSection) suggestSection.style.display = "block";
-    if (suggestTitle) suggestTitle.style.display = "block";
-    if (topSearchTags) topSearchTags.style.display = "flex";
+    suggestSection?.classList.remove("hidden");
+    suggestTitle?.classList.remove("hidden");
+    topSearchTags?.classList.remove("hidden");
   }
-
+  
   function hideSuggestions() {
-    if (suggestSection) suggestSection.style.display = "none";
-    if (suggestTitle) suggestTitle.style.display = "none";
-    if (topSearchTags) topSearchTags.style.display = "none";
+    suggestSection?.classList.add("hidden");
+    suggestTitle?.classList.add("hidden");
+    topSearchTags?.classList.add("hidden");
   }
 
   // === FUNZIONI WISHLIST ===
@@ -397,8 +396,8 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("ID mancante, impossibile rimuovere dai preferiti.");
         return;
       }
-
-      removeFavorite(item.id).then(() => {
+      
+      removeFavorite(item.id).then(() => {  
         icon.src = "img/hearth-search-page.png";
         icon.title = "Aggiungi ai preferiti";
         delete item.id;
@@ -413,6 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
         icon.title = "Rimuovi dai preferiti";
 
         if (data.id) {
+          // salvo l'id restituito dal DB, così da poter rimuovere senza doverlo ricaricare
           item.id = data.id;
           card.dataset.item = JSON.stringify(item);
         }
@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Content-Type": "application/json",
         "X-CSRF-TOKEN": csrfToken
       },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id }), 
       credentials: 'same-origin'
     })
     .then(res => res.json())
@@ -461,11 +461,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // === FUNZIONI CARRELLO ===
   function toggleCart(btn) {
     const card = btn.closest(".product-card");
-    const item = JSON.parse(card.dataset.item);
+    const item = JSON.parse(card.dataset.item); 
     const img = btn.querySelector("img.cart-icon");
-    const isInCart = img.src.includes("remove-from-cart.png");
+    const isInCart = img.src.includes("remove-from-cart.png");  // verifica se l'icona è quella del carrello pieno
   
-    if (isInCart) {
+    if (isInCart) { 
       if (!item.id) {
         alert("ID mancante, impossibile rimuovere dal carrello.");
         return;
@@ -505,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({ id }),
       credentials: 'same-origin'
     })
-    .then(res => res.json())
+    .then(res => res.json()) 
     .then(data => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
       loadCartItems(); 
@@ -525,17 +525,16 @@ document.addEventListener("DOMContentLoaded", () => {
       body: JSON.stringify({
         title: item.title || '',
         thumbnail: item.thumbnail || '',
-        price: item.price || item.extracted_price || 0,
+        price: item.price || item.extracted_price || 0, 
         snippet: item.snippet || ''
       }),
       credentials: 'same-origin'
     })
-    .then(res => res.json())
+    .then(res => res.json()) 
     .then(data => {
       if (!data.ok) return Promise.reject(data.error || "Errore");
       loadCartItems();
       return data;
     });
   }
-  
 });

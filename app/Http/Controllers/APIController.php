@@ -114,7 +114,7 @@ class ApiController extends BaseController
             'payment_method_types' => ['card'],
             'line_items' => $lineItems,
             'mode' => 'payment',
-            'success_url' => url('/grazie'),
+            'success_url' => url('/'),
             'cancel_url' => url('/'),
         ]);
     

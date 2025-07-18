@@ -31,7 +31,7 @@ Route::get('/search', 'App\Http\Controllers\SearchController@search');
 Route::post('/save-product', 'App\Http\Controllers\WishlistController@save');
 
 //cart search
-Route::get('/fetch-cart', 'App\Http\Controllers\CartController@loadCart');
+Route::get('/fetch-cart', 'App\Http\Controllers\CartController@fetchCart');
 Route::post('/add-to-cart', 'App\Http\Controllers\CartController@addToCart');
 Route::post('/remove-from-cart', 'App\Http\Controllers\CartController@removeFromCart');
 
