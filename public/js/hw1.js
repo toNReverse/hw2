@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`/search?q=${encodeURIComponent(query)}`)
       .then(res => res.json())
       .then(data => {
-        resultsContainer.replaceChildren();   // svuoto i risultati precedenti 
+        resultsContainer.replaceChildren();   // svuoto i risultati precedenti
         hideSuggestions();
   
         if (!data.shopping_results || data.shopping_results.length === 0) {
@@ -292,15 +292,14 @@ document.addEventListener("DOMContentLoaded", () => {
           resultsContainer.appendChild(empty);
           return;
         }
-        
-        Promise.all([ // carico preferiti e carrello
+        Promise.all([ // carico in parallelo preferiti e carrello
           fetch("/load-favorites").then(res => res.json()),
           fetch("/fetch-cart").then(res => res.json())
         ]).then(([favorites, cartItems]) => {
           for (const item of data.shopping_results) {
             const favoriteItem = favorites.find(fav => fav.title === item.title);
             const cartItem = cartItems.find(cart => cart.title === item.title);
-          
+           
             const isFav = Boolean(favoriteItem);
             const isInCart = Boolean(cartItem);
           
@@ -325,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const template = document.querySelector(".product-card.template"); 
     const card = template.cloneNode(true);  
     card.classList.remove("template", "hidden");
-    card.dataset.item = JSON.stringify(item); // salvo l'oggetto prodotto nel dataset 
+    card.dataset.item = JSON.stringify(item); // salvo l'oggetto prodotto nel dataset, oggetto->string
   
     const img = card.querySelector(".product-image");
     img.src = item.thumbnail;
@@ -378,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = JSON.parse(card.dataset.item);
     const isFav = icon.src.includes("filled-hearth-search-page.png");
 
-    if (isFav) {
+    if (isFav) { 
       if (!item.favId) {
         alert("ID mancante, impossibile rimuovere dai preferiti.");
         return;
@@ -387,8 +386,8 @@ document.addEventListener("DOMContentLoaded", () => {
       removeFavorite(item.favId).then(() => {
         icon.src = "img/hearth-search-page.png";
         icon.title = "Aggiungi ai preferiti";
-        delete item.favId;
-        card.dataset.item = JSON.stringify(item);
+        delete item.favId;  // tolgo la proprietà favId dall'oggetto
+        card.dataset.item = JSON.stringify(item); // aggiorno il dataset 
       }).catch(() => alert("Errore nella rimozione dai preferiti"));
       
     } else {
@@ -400,7 +399,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (data.id) {
           // salvo l'id restituito dal DB, così da poter rimuovere senza doverlo ricaricare
-          item.favId = data.id;
+          item.favId = data.id; // aggiungo la proprietà favId all'oggetto
           card.dataset.item = JSON.stringify(item);
         }
       }).catch(() => alert("Errore nell'aggiunta ai preferiti"));
@@ -461,8 +460,8 @@ document.addEventListener("DOMContentLoaded", () => {
       removeFromCart(item.cartId).then(() => {
         img.src = "img/add-to-cart.png";
         img.title = "Aggiungi al carrello";
-        delete item.cartId;
-        card.dataset.item = JSON.stringify(item);
+        delete item.cartId; // tolgo la proprietà cartId dall'oggetto
+        card.dataset.item = JSON.stringify(item); // aggiorno il dataset
       }).catch(() => alert("Errore nella rimozione dal carrello"));
   
     } else {
@@ -473,7 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
         img.title = "Rimuovi dal carrello";
   
         if (data.id) {
-          item.cartId = data.id;
+          item.cartId = data.id;  // aggiungo la proprietà cartId all'oggetto
           card.dataset.item = JSON.stringify(item);
         }
       }).catch(() => alert("Errore nell'aggiunta al carrello"));
