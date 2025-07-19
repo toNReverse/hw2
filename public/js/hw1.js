@@ -48,8 +48,8 @@ chiudiNavModale('#nav-donna');
 chiudiNavModale('#nav-uomo');
 chiudiNavModale('#nav-bskteen');
 
+// Gestione pagina di ricerca
 let isSearchOpen = false;
-
 document.querySelector('.search-container').addEventListener('click', function() {
   const searchText = document.querySelector('#search-text');
   const searchIcon = document.querySelector('.search-icon');
@@ -66,12 +66,9 @@ document.querySelector('.search-container').addEventListener('click', function()
           el.style.display = isSearchOpen ? 'none' : '';
       }
   }
-
   navbar.style.borderBottom = isSearchOpen ? 'none' : '1px solid black';
-
   searchText.textContent = isSearchOpen ? "CHIUDI" : "CERCA";
   searchIcon.src = isSearchOpen ? "./img/close-icon.png" : "./img/54481.png";
-
   document.querySelector('#search-page').style.display = isSearchOpen ? 'block' : 'none';
 });
 
@@ -91,19 +88,31 @@ closeBtn.addEventListener('click', () => {
 const tabs = document.querySelectorAll('#gender-tabs .tab');
 const contents = document.querySelectorAll('.menu-content');
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', function (e) {
+for (let i = 0; i < tabs.length; i++) {
+  tabs[i].addEventListener('click', function (e) {
     e.preventDefault();
 
-    tabs.forEach(t => t.classList.remove('active'));
+    // Rimuove la classe 'active' da tutti i tab
+    for (let j = 0; j < tabs.length; j++) {
+      tabs[j].classList.remove('active');
+    }
+
+    // Aggiunge la classe 'active' al tab cliccato
     this.classList.add('active');
 
-    const gender = this.getAttribute('data-gender');
-    contents.forEach(content => content.style.display = 'none');
-    document.getElementById('menu-' + gender).style.display = 'block';
-  });
-});
+    // Nasconde tutti i contenuti
+    for (let k = 0; k < contents.length; k++) {
+      contents[k].style.display = 'none';
+    }
 
+    // Mostra solo il contenuto associato al tab cliccato
+    const gender = this.getAttribute('data-gender');
+    const activeContent = document.getElementById('menu-' + gender);
+    if (activeContent) {
+      activeContent.style.display = 'block';
+    }
+  });
+}
 
 /* API CONVERSIONE VALUTA */
 const currencySelector = document.getElementById('currency-selector');
@@ -148,14 +157,13 @@ if (currencyDropdown && menuValuta) {
   });
 }
 
-// funzione per aggiornare i prezzi in base alla valuta selezionata
-function updateExchangeRates(toCurrency, container = document) {
+// funzione per aggiornare i prezzi in base alla valuta selezionata 
+function updateExchangeRates(toCurrency, container = document) {  //usa tutto il DOM se non specifico un contenitore
   const priceSelectors = ['.price', '.price-red', '.price-old', '.wl-price', '.cart-item-price', '.product-price'];
   const priceElements = container.querySelectorAll(priceSelectors.join(', '));
 
-  for (const priceElement of priceElements) { // tolgo spazi prima/dopo.
+  for (const priceElement of priceElements) {
     const text = priceElement.textContent.trim();
-
     let matchedSymbol = null;
     let symbolLength = 0;
 
@@ -169,11 +177,11 @@ function updateExchangeRates(toCurrency, container = document) {
     }
     if (!matchedSymbol) continue;
 
-    const amountText = text.slice(0, -symbolLength).trim().replace(',', '.'); // rimuovo il simbolo
+    const amountText = text.slice(0, -symbolLength).trim().replace(',', '.'); 
     const amount = parseFloat(amountText);
     if (amount !== amount) continue;
     const fromCurrency = reverseSymbols[matchedSymbol];
-    if (fromCurrency === toCurrency) continue;  // se la valuta è già quella selezionata, non faccio nulla
+    if (fromCurrency === toCurrency) continue; 
 
     fetch(`/convert_currency?from=${fromCurrency}&to=${toCurrency}&amount=${amount}`)
     .then(response => {

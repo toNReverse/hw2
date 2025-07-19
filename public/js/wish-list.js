@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   for (let heart of hearts) {
     heart.addEventListener('click', () => {
       const id = heart.dataset.id;
-      const card = heart.closest('.wl-card');
+      const card = heart.closest('.wl-card'); // trova la card più vicina al cuore cliccato
 
       fetch('/remove-product', {
         method: 'POST',

@@ -2,12 +2,12 @@ function loadCartItems() {
   const cartItemsContainer = document.getElementById("cart-items-container");
   const emptyCartContainer = document.getElementById("cart-empty-content");
   const checkoutButton = document.getElementById("checkout-button");
-  const template = cartItemsContainer.querySelector(".cart-item.template");
+  const template = cartItemsContainer.querySelector(".cart-item.template"); 
 
   fetch("/fetch-cart")
     .then(res => res.ok ? res.json() : [])
     .then(cartItems => {
-      
+
       // rimuove tutti gli elementi del carrello tranne il template
       const cartElements = cartItemsContainer.children;
       for (let i = cartElements.length - 1; i >= 0; i--) {
