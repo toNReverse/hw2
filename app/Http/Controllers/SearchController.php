@@ -25,10 +25,9 @@ class SearchController extends BaseController
             'api_key' => $api_key
         ]);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        $ch = curl_init($url);  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
+        $response = curl_exec($ch); 
         
         if (curl_errno($ch)) {
             return response()->json(['error' => curl_error($ch)]);

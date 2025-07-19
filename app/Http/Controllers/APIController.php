@@ -24,7 +24,8 @@ class ApiController extends BaseController
     
         $ch = curl_init($url);  
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch); 
+        $response = curl_exec($ch);
+        
         $curlError = curl_error($ch);
         curl_close($ch);   
         
@@ -41,9 +42,8 @@ class ApiController extends BaseController
     
         return response()->json([
             'translatedText' => $data['responseData']['translatedText'],
-        ]);
+        ]); //respondedata è l'array che contiene il testo tradotto e traslatedText è la chiave che contiene il testo tradotto
     }
-
     public function convertCurrency(Request $request)
     {
         $from = $request->query('from');
@@ -54,17 +54,21 @@ class ApiController extends BaseController
             return response()->json(['error' => 'Dati mancanti'], 400);
         }
     
-        $apiKey = env('EXCHANGE_API_KEY');  // <--- chiave da .env
+        $apiKey = env('EXCHANGE_API_KEY');
         $url = "https://v6.exchangerate-api.com/v6/$apiKey/latest/$from";
     
-        $response = file_get_contents($url);
-        if ($response === false) {
-            return response()->json(['error' => 'Errore nella richiesta API'], 500);
+        $ch = curl_init($url);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+    
+        if (curl_errno($ch)) {
+            return response()->json(['error' => curl_error($ch)], 500);
         }
     
-        $data = json_decode($response, true);   // decodifica la risposta JSON
+        curl_close($ch);
+        $data = json_decode($response, true);
     
-        if (!isset($data['conversion_rates'][$to])) {  
+        if (!isset($data['conversion_rates'][$to])) {
             return response()->json(['error' => 'Valuta non supportata'], 400);
         }
     
