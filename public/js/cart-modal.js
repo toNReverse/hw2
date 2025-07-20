@@ -39,10 +39,9 @@ function loadCartItems() {
         card.querySelector(".cart-item-title").textContent = item.title;
         card.querySelector(".cart-item-price").textContent = `${parseFloat(item.price).toFixed(2)} €`;
 
-        // Imposta id e titolo per il pulsante di rimozione 
+        // Imposto id al pulsante di rimozione per ogni elemento
         const removeBtn = card.querySelector(".remove-cart-item-btn");
         removeBtn.dataset.id = item.id;
-        removeBtn.dataset.title = item.title;
 
         cartItemsContainer.appendChild(card);
       }
@@ -54,9 +53,8 @@ function loadCartItems() {
     });
 }
 
-// aggiorna l’icona del carrello usando il title come chiave per trovarlo nel DOM.
-function updateCartIcon(title) {
-  const btn = document.querySelector(`.cart-btn[data-title="${CSS.escape(title)}"]`);
+function updateCartIcon(productId) {
+  const btn = document.querySelector(`.cart-btn[data-id="${productId}"]`);  // btn carrello in ricerca
   if (btn) {
     const img = btn.querySelector("img.cart-icon");
     if (img) {
@@ -66,9 +64,9 @@ function updateCartIcon(title) {
   }
 }
 
-function refreshCartAndIcon(title) {
+function refreshCartAndIcon(productId) {
   loadCartItems();
-  updateCartIcon(title);
+  updateCartIcon(productId);  
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -80,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("remove-cart-item-btn")) {
       const productId = evento.target.dataset.id;
-      const productTitle = evento.target.dataset.title;
 
       if (!productId) {
         alert("ID prodotto mancante. Impossibile rimuovere dal carrello.");
@@ -98,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.json())
         .then(result => {
           if (result.ok) {
-            refreshCartAndIcon(productTitle);
+            refreshCartAndIcon(productId);
           } else {
             alert("Errore durante la rimozione dal carrello.");
           }
